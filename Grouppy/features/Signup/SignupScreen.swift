@@ -8,75 +8,227 @@
 import SwiftUI
 
 struct SignupScreen: View {
-    @State private var isAgreed = false
-    @State private var inputPassword = ""
-    @State private var inputPasswordConfirm = ""
+    // TODO: UIStateを他でまとめたい
+    @State private var email = ""
+    @State private var password = ""
+    @State private var passwordConfirm = ""
+    @State private var isPasswordVisible = false
+    @State private var isAgreedTerms = false
+    @State private var isAgreedPrivacy = false
     @State private var isAlertPresented = false
+    @State private var showTerms = false
+    @State private var showPrivacy = false
 
     var body: some View {
-        VStack {
-            Text("アカウント作成")
-                .font(.largeTitle)
-            TextField("ユーザー名", text: .constant(""))
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(5)
-            
-            TextField("メールアドレス", text: .constant(""))
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(5)
-            
-            SecureField("パスワード", text: $inputPassword)
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(5)
-            
-            SecureField("パスワード確認", text: $inputPasswordConfirm)
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(5)
-            
-            
+        VStack(spacing: 0) {
             HStack {
-                Image(systemName: isAgreed ? "checkmark.square" : "square")
-                    .foregroundColor(.gray)
-                
-                Button(action: {
-                    // TODO: Open terms of service
-                }) {
-                    Text("利用規約")
-                        .foregroundColor(.blue)
-                }
-                Text("に同意する")
-                    .foregroundColor(.gray)
-            }.onTapGesture {
-                isAgreed.toggle()
+                Text("アカウント作成")
+                    .font(.headline)
+                    .padding(.leading, 8)
+                Spacer()
             }
+            .padding(.top, 16)
+            
+            Spacer().frame(height: 16)
+            
+            // ロゴ
+            ZStack {
+                Circle()
+                    .fill(Color.blue)
+                    .frame(width: 80, height: 80)
+                Text("App")
+                    .foregroundColor(.white)
+                    .font(.title)
+                    .bold()
+            }
+            .padding(.bottom, 8)
+            
+            Text("新規アカウント登録")
+                .font(.title3).bold()
+                .padding(.bottom, 2)
+            Text("以下の情報を入力してください")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+                .padding(.bottom, 16)
+            
+            Group {
+                TextField("メールアドレス", text: $email)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .padding(.bottom, 8)
+                ZStack(alignment: .trailing) {
+                    if isPasswordVisible {
+                        TextField("パスワード", text: $password)
+                    } else {
+                        SecureField("パスワード", text: $password)
+                    }
+                    Button(action: { isPasswordVisible.toggle() }) {
+                        Text(isPasswordVisible ? "非表示" : "表示")
+                            .foregroundColor(.blue)
+                            .font(.caption)
+                    }
+                    .padding(.trailing, 12)
+                }
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding(.bottom, 8)
+                SecureField("パスワード確認", text: $passwordConfirm)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .padding(.bottom, 8)
+            }
+            
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(alignment: .center) {
+                    Button(action: { isAgreedTerms.toggle() }) {
+                        Image(systemName: isAgreedTerms ? "checkmark.square" : "square")
+                            .foregroundColor(.black)
+                    }
+                    Button(action: { showTerms = true }) {
+                        Text("利用規約")
+                            .foregroundColor(.blue)
+                            .underline()
+                    }
+                    Text("に同意する")
+                        .foregroundColor(.black)
+                    Spacer()
+                }
+                HStack(alignment: .center) {
+                    Button(action: { isAgreedPrivacy.toggle() }) {
+                        Image(systemName: isAgreedPrivacy ? "checkmark.square" : "square")
+                            .foregroundColor(.black)
+                    }
+                    Button(action: { showPrivacy = true }) {
+                        Text("プライバシーポリシー")
+                            .foregroundColor(.blue)
+                            .underline()
+                    }
+                    Text("に同意する")
+                        .foregroundColor(.black)
+                    Spacer()
+                }
+            }
+            .padding(.vertical, 8)
             
             Button(action: {
                 if validatePassword() {
                     // TODO: Implement signup action
                 } else {
                     isAlertPresented = true
-                    inputPasswordConfirm = ""
+                    passwordConfirm = ""
                 }
             }) {
-                Text("アカウント作成")
+                Text("登録する")
                     .foregroundColor(.white)
                     .font(.headline)
+                    .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
+                    .background((isAgreedTerms && isAgreedPrivacy) ? Color.blue : Color.gray)
                     .cornerRadius(20)
             }
-        }.padding(.horizontal, 20)
-            .alert(isPresented: $isAlertPresented) {
-                Alert(title: Text("エラー"), message: Text("パスワードが一致しません"), dismissButton: .default(Text("OK")))
+            .disabled(!(isAgreedTerms && isAgreedPrivacy))
+            .padding(.top, 12)
+            
+            HStack {
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundColor(Color(.systemGray4))
+                Text("または")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundColor(Color(.systemGray4))
             }
+            .padding(.vertical, 16)
+            
+            Button(action: { /* Google認証 */ }) {
+                HStack {
+                    Circle()
+                        .fill(Color(.systemGray5))
+                        .frame(width: 24, height: 24)
+                        .overlay(Image(systemName: "globe").foregroundColor(.blue))
+                    Text("Googleで続ける")
+                        .foregroundColor(.black)
+                        .font(.headline)
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color(.systemGray4), lineWidth: 1)
+                )
+                .cornerRadius(20)
+            }
+            .padding(.bottom, 8)
+            Button(action: { /* Apple認証 */ }) {
+                HStack {
+                    Circle()
+                        .fill(Color.black)
+                        .frame(width: 24, height: 24)
+                        .overlay(Image(systemName: "applelogo").foregroundColor(.white))
+                    Text("Appleで続ける")
+                        .foregroundColor(.white)
+                        .font(.headline)
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.black)
+                .cornerRadius(20)
+            }
+            
+            Spacer()
+            HStack(spacing: 4) {
+                Text("すでにアカウントをお持ちですか？")
+                    .foregroundColor(.gray)
+                    .font(.footnote)
+                Button(action: { /* ログイン画面へ */ }) {
+                    Text("ログイン")
+                        .foregroundColor(.blue)
+                        .font(.footnote)
+                        .underline()
+                }
+            }
+            .padding(.bottom, 16)
+        }
+        .padding(.horizontal, 20)
+        .alert(isPresented: $isAlertPresented) {
+            Alert(title: Text("エラー"), message: Text("パスワードが一致しません"), dismissButton: .default(Text("OK")))
+        }
+        .sheet(isPresented: $showTerms) {
+            VStack {
+                Text("利用規約")
+                    .font(.title2).bold()
+                    .padding()
+                ScrollView {
+                    Text("ここに利用規約の内容を記載。\n\n（またはWebViewでURLを開く実装）")
+                        .padding()
+                }
+                Button("閉じる") { showTerms = false }
+                    .padding()
+            }
+        }
+        .sheet(isPresented: $showPrivacy) {
+            VStack {
+                Text("プライバシーポリシー")
+                    .font(.title2).bold()
+                    .padding()
+                ScrollView {
+                    Text("ここにプライバシーポリシーの内容を記載。\n\n（またはWebViewでURLを開く実装）")
+                        .padding()
+                }
+                Button("閉じる") { showPrivacy = false }
+                    .padding()
+            }
+        }
     }
 
     private func validatePassword() -> Bool {
-        return inputPassword == inputPasswordConfirm
+        return password == passwordConfirm && !password.isEmpty
     }
 }
 
