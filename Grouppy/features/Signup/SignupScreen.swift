@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct SignupScreen: View {
+    @State private var isAgreed = false
+    @State private var inputPassword = ""
+    @State private var inputPasswordConfirm = ""
+    @State private var isAlertPresented = false
+
     var body: some View {
         VStack {
             Text("アカウント作成")
@@ -22,26 +27,40 @@ struct SignupScreen: View {
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(5)
             
-            SecureField("パスワード", text: .constant(""))
+            SecureField("パスワード", text: $inputPassword)
                 .padding()
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(5)
             
-            SecureField("パスワード確認", text: .constant(""))
+            SecureField("パスワード確認", text: $inputPasswordConfirm)
                 .padding()
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(5)
             
             
             HStack {
-                Image(systemName: "checkmark.square")
-                    .foregroundColor(.blue)
-                Text("利用規約に同意する")
-                    .foregroundColor(.blue)
+                Image(systemName: isAgreed ? "checkmark.square" : "square")
+                    .foregroundColor(.gray)
+                
+                Button(action: {
+                    // TODO: Open terms of service
+                }) {
+                    Text("利用規約")
+                        .foregroundColor(.blue)
+                }
+                Text("に同意する")
+                    .foregroundColor(.gray)
+            }.onTapGesture {
+                isAgreed.toggle()
             }
             
             Button(action: {
-                // TOOD: Implement signup action
+                if validatePassword() {
+                    // TODO: Implement signup action
+                } else {
+                    isAlertPresented = true
+                    inputPasswordConfirm = ""
+                }
             }) {
                 Text("アカウント作成")
                     .foregroundColor(.white)
@@ -50,9 +69,14 @@ struct SignupScreen: View {
                     .background(Color.blue)
                     .cornerRadius(20)
             }
-            
-            
         }.padding(.horizontal, 20)
+            .alert(isPresented: $isAlertPresented) {
+                Alert(title: Text("エラー"), message: Text("パスワードが一致しません"), dismissButton: .default(Text("OK")))
+            }
+    }
+
+    private func validatePassword() -> Bool {
+        return inputPassword == inputPasswordConfirm
     }
 }
 
