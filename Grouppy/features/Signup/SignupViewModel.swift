@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+class SignupViewModel: ObservableObject {
+    @Published var uiState: SignupUIState = SignupUIState()
+
+    func validatePassword() -> Bool {
+        return uiState.password == uiState.passwordConfirm && !uiState.password.isEmpty
+    }
+}

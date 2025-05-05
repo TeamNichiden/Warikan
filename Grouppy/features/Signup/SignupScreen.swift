@@ -8,16 +8,7 @@
 import SwiftUI
 
 struct SignupScreen: View {
-    // TODO: UIStateを他でまとめたい
-    @State private var email = ""
-    @State private var password = ""
-    @State private var passwordConfirm = ""
-    @State private var isPasswordVisible = false
-    @State private var isAgreedTerms = false
-    @State private var isAgreedPrivacy = false
-    @State private var isAlertPresented = false
-    @State private var showTerms = false
-    @State private var showPrivacy = false
+    @StateObject private var vm = SignupViewModel()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -52,19 +43,19 @@ struct SignupScreen: View {
                 .padding(.bottom, 16)
             
             Group {
-                TextField("メールアドレス", text: $email)
+                TextField("メールアドレス", text: $vm.uiState.email)
                     .padding()
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
                     .padding(.bottom, 8)
                 ZStack(alignment: .trailing) {
-                    if isPasswordVisible {
-                        TextField("パスワード", text: $password)
+                    if vm.uiState.isPasswordVisible {
+                        TextField("パスワード", text: $vm.uiState.password)
                     } else {
-                        SecureField("パスワード", text: $password)
+                        SecureField("パスワード", text: $vm.uiState.password)
                     }
-                    Button(action: { isPasswordVisible.toggle() }) {
-                        Text(isPasswordVisible ? "非表示" : "表示")
+                    Button(action: { vm.uiState.isPasswordVisible.toggle() }) {
+                        Text(vm.uiState.isPasswordVisible ? "非表示" : "表示")
                             .foregroundColor(.blue)
                             .font(.caption)
                     }
@@ -74,7 +65,7 @@ struct SignupScreen: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
                 .padding(.bottom, 8)
-                SecureField("パスワード確認", text: $passwordConfirm)
+                SecureField("パスワード確認", text: $vm.uiState.passwordConfirm)
                     .padding()
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
@@ -83,11 +74,11 @@ struct SignupScreen: View {
             
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .center) {
-                    Button(action: { isAgreedTerms.toggle() }) {
-                        Image(systemName: isAgreedTerms ? "checkmark.square" : "square")
+                    Button(action: { vm.uiState.isAgreedTerms.toggle() }) {
+                        Image(systemName: vm.uiState.isAgreedTerms ? "checkmark.square" : "square")
                             .foregroundColor(.black)
                     }
-                    Button(action: { showTerms = true }) {
+                    Button(action: { vm.uiState.showTerms = true }) {
                         Text("利用規約")
                             .foregroundColor(.blue)
                             .underline()
@@ -97,11 +88,11 @@ struct SignupScreen: View {
                     Spacer()
                 }
                 HStack(alignment: .center) {
-                    Button(action: { isAgreedPrivacy.toggle() }) {
-                        Image(systemName: isAgreedPrivacy ? "checkmark.square" : "square")
+                    Button(action: { vm.uiState.isAgreedPrivacy.toggle() }) {
+                        Image(systemName: vm.uiState.isAgreedPrivacy ? "checkmark.square" : "square")
                             .foregroundColor(.black)
                     }
-                    Button(action: { showPrivacy = true }) {
+                    Button(action: { vm.uiState.showPrivacy = true }) {
                         Text("プライバシーポリシー")
                             .foregroundColor(.blue)
                             .underline()
@@ -114,11 +105,11 @@ struct SignupScreen: View {
             .padding(.vertical, 8)
             
             Button(action: {
-                if validatePassword() {
+                if vm.validatePassword() {
                     // TODO: Implement signup action
                 } else {
-                    isAlertPresented = true
-                    passwordConfirm = ""
+                    vm.uiState.isAlertPresented = true
+                    vm.uiState.passwordConfirm = ""
                 }
             }) {
                 Text("登録する")
@@ -126,10 +117,10 @@ struct SignupScreen: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background((isAgreedTerms && isAgreedPrivacy) ? Color.blue : Color.gray)
+                    .background((vm.uiState.isAgreedTerms && vm.uiState.isAgreedPrivacy) ? Color.blue : Color.gray)
                     .cornerRadius(20)
             }
-            .disabled(!(isAgreedTerms && isAgreedPrivacy))
+            .disabled(!(vm.uiState.isAgreedTerms && vm.uiState.isAgreedPrivacy))
             .padding(.top, 12)
             
             HStack {
@@ -196,10 +187,10 @@ struct SignupScreen: View {
             .padding(.bottom, 16)
         }
         .padding(.horizontal, 20)
-        .alert(isPresented: $isAlertPresented) {
+        .alert(isPresented: $vm.uiState.isAlertPresented) {
             Alert(title: Text("エラー"), message: Text("パスワードが一致しません"), dismissButton: .default(Text("OK")))
         }
-        .sheet(isPresented: $showTerms) {
+        .sheet(isPresented: $vm.uiState.showTerms) {
             VStack {
                 Text("利用規約")
                     .font(.title2).bold()
@@ -208,11 +199,11 @@ struct SignupScreen: View {
                     Text("ここに利用規約の内容を記載。\n\n（またはWebViewでURLを開く実装）")
                         .padding()
                 }
-                Button("閉じる") { showTerms = false }
+                Button("閉じる") { vm.uiState.showTerms = false }
                     .padding()
             }
         }
-        .sheet(isPresented: $showPrivacy) {
+        .sheet(isPresented: $vm.uiState.showPrivacy) {
             VStack {
                 Text("プライバシーポリシー")
                     .font(.title2).bold()
@@ -221,14 +212,10 @@ struct SignupScreen: View {
                     Text("ここにプライバシーポリシーの内容を記載。\n\n（またはWebViewでURLを開く実装）")
                         .padding()
                 }
-                Button("閉じる") { showPrivacy = false }
+                Button("閉じる") { vm.uiState.showPrivacy = false }
                     .padding()
             }
         }
-    }
-
-    private func validatePassword() -> Bool {
-        return password == passwordConfirm && !password.isEmpty
     }
 }
 
