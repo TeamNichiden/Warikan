@@ -9,30 +9,45 @@ import SwiftUI
 
 
 struct HomeView: View {
+    @StateObject var vm = HomeViewModel()
+    
     //MARK: TEST
     let screenWidth = UIScreen.main.bounds.width
     
     var body: some View {
         
-        VStack {
-            
-            //MARK: PROFILE
-            ProfileHeaderView()
-            
-            
-            Spacer()
-            
-            //MARK: GROUP
-            VStack(alignment: .leading) {
-                Text("グループ管理")
-                    .fontWeight(.bold)
-                groupControllerStyle(btnImg: "plus.circle.fill", title: "グリープ作成", message: "新しいグループを作成する")
-                groupControllerStyle(btnImg: "list.dash", title: "グループ確認", message: "所属グループを作成する")
+        NavigationStack {
+            VStack {
+                
+                //MARK: PROFILE
+                
+                ProfileHeaderView()
+                    Button(action: {
+                        vm.isEdit = true
+                    }) {
+                        Text("編集")
+                            .underline()
+                    }
+                
+                
+                
+                Spacer()
+                
+                //MARK: GROUP
+                VStack(alignment: .leading) {
+                    Text("グループ管理")
+                        .fontWeight(.bold)
+                    groupControllerStyle(btnImg: "plus.circle.fill", title: "グリープ作成", message: "新しいグループを作成する")
+                    groupControllerStyle(btnImg: "list.dash", title: "グループ確認", message: "所属グループを作成する")
+                }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding()
+            
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding()
-        
+        .navigationDestination(isPresented: $vm.isEdit) {
+            EditableProfileView()
+        }
         
     }
 }
@@ -70,5 +85,7 @@ extension View {
 }
 
 #Preview {
-    HomeView()
+    NavigationStack {
+        HomeView()
+    }
 }

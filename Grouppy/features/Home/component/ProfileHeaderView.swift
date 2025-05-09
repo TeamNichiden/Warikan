@@ -7,7 +7,10 @@
 
 import SwiftUI
 
+
+
 struct ProfileHeaderView: View {
+    
     var body: some View {
         HStack {
             Spacer()
@@ -20,20 +23,15 @@ struct ProfileHeaderView: View {
                 
                 VStack(alignment: .leading) {
                     
-                    Text("ユーザー名")
-                    Text("@username")
+                    Text(UserModel.sampleModel.name)
+                    Text(UserModel.sampleModel.userID)
                         .foregroundColor(.gray)
                     
                 }
                 
                 Spacer()
                 
-                Button(action: {
-                    
-                }) {
-                    Text("編集")
-                        .underline()
-                }
+                
             }
         }
         .padding()

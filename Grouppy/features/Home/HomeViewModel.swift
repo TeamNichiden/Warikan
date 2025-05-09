@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+class HomeViewModel: ObservableObject {
+    @Published var isEdit:Bool = false
+    
+}
