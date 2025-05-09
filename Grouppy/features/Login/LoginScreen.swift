@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct LoginScreen: View {
+    @State private var showHomeView:Bool = false
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("ホーム画面へ")
+                .onTapGesture {
+                    showHomeView = true
+                }
+        }
+        .fullScreenCover(isPresented: $showHomeView) {
+            HomeView()
+        }
     }
 }
 

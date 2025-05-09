@@ -6,11 +6,11 @@
 //
 import SwiftUI
 
-class EditableProfileViewModel:ObservableObject {
-    @Published var editUser: UserModel
+class UserProfileViewModel:ObservableObject {
+    @Published var user: UserModel
     
     init() {
-        self.editUser = UserModel.sampleModel
+        self.user = UserModel.sampleModel
     }
     
     func resetEmail() {
