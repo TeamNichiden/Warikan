@@ -19,7 +19,9 @@ struct UserProfileView: View {
                 .fill(Color(.systemGray6))
                 .frame(width: 100)
                 .padding()
-            Button(action: { /*カメラ/ライブラリ選択できるPicker起動*/ }) {
+            Button(action: {
+                vm.showDialog = true
+            }) {
                 Text("アイコンを変更")
                     .font(.system(size: 14))
             }
@@ -41,6 +43,30 @@ struct UserProfileView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal)
+        .confirmationDialog("", isPresented: $vm.showDialog, titleVisibility: .hidden) {
+            Button {
+                vm.showCamera = true
+            } label: {
+                Text("カメラ")
+            }
+            
+            Button {
+                vm.showLibrary = true
+            } label: {
+                Text("ライブラリ")
+            }
+
+            Button("キャンセル",role: .cancel) {
+                vm.showDialog = false
+            }
+        }
+        .fullScreenCover(isPresented: $vm.showCamera) {
+            CameraView(icon: $vm.user.icon)
+                .ignoresSafeArea()
+        }
+        .sheet(isPresented: $vm.showLibrary) {
+            PhotoLibraryView(icon: $vm.user.icon)
+        }
         Spacer()
     }
 }
