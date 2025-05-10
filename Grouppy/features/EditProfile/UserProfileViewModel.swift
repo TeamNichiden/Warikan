@@ -8,6 +8,9 @@ import SwiftUI
 
 class UserProfileViewModel:ObservableObject {
     @Published var user: UserModel
+    @Published var showDialog: Bool = false
+    @Published var showCamera: Bool = false
+    @Published var showLibrary: Bool = false
     
     init() {
         self.user = UserModel.sampleModel

@@ -11,7 +11,7 @@ struct UserModel {
     var name: String
     var userID: String
     var email: String
-    var icon: Image?
+    var icon: UIImage?
     
     static let sampleModel = UserModel(name: "さいかく", userID: "saikaku", email: "saikaku@jec.ac.jp")
 }
