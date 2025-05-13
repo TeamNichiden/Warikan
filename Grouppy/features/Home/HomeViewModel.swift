@@ -5,9 +5,16 @@
 //  Created by cmStudent on 2025/05/02.
 //
 
-import Foundation
+import SwiftUI
 
 class HomeViewModel: ObservableObject {
-    @Published var isEdit:Bool = false
+    @Published var navigationPath = NavigationPath()
     
+    func goToEdit() {
+        navigationPath.append(AddRoute.editProfile)
+    }
+    
+    func goToAddNewGroup() {
+        navigationPath.append(AddRoute.addNewGroup)
+    }
 }

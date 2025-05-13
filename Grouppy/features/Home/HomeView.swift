@@ -13,7 +13,7 @@ struct HomeView: View {
     
     var body: some View {
         
-        NavigationStack {
+        NavigationStack(path: $vm.navigationPath) {
             VStack {
                 
                 //MARK: HEADER
@@ -26,7 +26,7 @@ struct HomeView: View {
                 .cornerRadius(10)
                 .overlay(alignment: .topTrailing) {
                     Button {
-                        vm.isEdit = true
+                        vm.goToEdit()
                     } label: {
                         Text("編集")
                             .underline()
@@ -43,9 +43,11 @@ struct HomeView: View {
                         .fontWeight(.bold)
                         .padding()
                     
-                    groupCard(action: { /*グルー作成画面へ遷移*/ },
+                    groupCard(action: {
+                        vm.goToAddNewGroup()
+                    },
                               btnImg: "plus.circle.fill",
-                              title: "グリープ作成",
+                              title: "グループ作成",
                               message: "新しいグループを作成する")
                     
                     groupCard(action: { /*グループリストを表示*/ },
@@ -56,8 +58,13 @@ struct HomeView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
-            .navigationDestination(isPresented: $vm.isEdit) {
-                UserProfileView()
+            .navigationDestination(for: AddRoute.self) { route in
+                switch route {
+                case .editProfile:
+                    UserProfileView()
+                case .addNewGroup:
+                    AddNewGroupView()
+                }
             }
         }
     }
