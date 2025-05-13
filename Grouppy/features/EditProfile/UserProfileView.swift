@@ -38,7 +38,7 @@ struct UserProfileView: View {
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(Color.blue)
-                    .cornerRadius(10)
+                    .cornerRadius(8)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
