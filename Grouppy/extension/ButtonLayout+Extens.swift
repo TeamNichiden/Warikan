@@ -15,5 +15,6 @@ extension View {
             .frame(maxWidth: .infinity)
             .background(Color.blue)
             .cornerRadius(8)
+            .padding(.horizontal)
     }
 }

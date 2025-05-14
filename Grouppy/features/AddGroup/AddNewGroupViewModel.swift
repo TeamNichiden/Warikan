@@ -9,10 +9,11 @@ import Foundation
 
 class AddNewGroupViewModel:ObservableObject {
     @Published var mockGroup = MockGroupModel()
-    @Published var groupList: [MockGroupModel] = []
     @Published var isShowGroup: Bool = false
     @Published var selectedDate = Date()
     @Published var showDatePicker: Bool = false
+    @Published var isCreating: Bool = false
+    @Published var lastGroupId: UUID?
     
     func initialDate() {
         let today = Date()
@@ -30,5 +31,19 @@ class AddNewGroupViewModel:ObservableObject {
     
     func showMap() {
         
+    }
+    
+    func isCheckingInfo() {
+        if !mockGroup.groupName.isEmpty {
+            addGroup()
+            isShowGroup = true
+        }
+    }
+    
+    func addGroup() {
+        let newGroup = mockGroup
+        MockGroupList.shared.groupList.append(newGroup)
+        lastGroupId = newGroup.id
+        mockGroup = MockGroupModel()
     }
 }
