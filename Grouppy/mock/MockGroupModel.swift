@@ -15,3 +15,11 @@ struct MockGroupModel {
     var palce: String = ""
     var member: [UserModel] = []
 }
+
+class MockGroupList {
+    static let shared = MockGroupList()
+    
+    private init() {}
+    
+    var groupList: [MockGroupModel] = []
+}

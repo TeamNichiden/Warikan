@@ -17,4 +17,10 @@ class HomeViewModel: ObservableObject {
     func goToAddNewGroup() {
         navigationPath.append(AddRoute.addNewGroup)
     }
+    // MARK: TEST
+    func checkList() {
+        for group in MockGroupList.shared.groupList {
+            print(group.groupName)
+        }
+    }
 }

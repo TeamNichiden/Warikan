@@ -12,55 +12,68 @@ struct AddNewGroupView: View {
     @StateObject var vm = AddNewGroupViewModel()
     
     var body: some View {
-        VStack {
-            Text("グループ作成")
-                .font(.title)
-                .fontWeight(.bold)
-            Spacer()
-            groupInfoRow(title: "グループ名", message: "グループ名を入力", inputMessage: $vm.mockGroup.groupName)
-            groupInfoRow(title: "メモ", message: "詳細情報を入力(任意)", inputMessage: $vm.mockGroup.groupMemo)
-            groupInfoRow(title: "日時", message: "", inputMessage: $vm.mockGroup.dateStr, isInputText: true, btnIcon: "calendar", action: vm.showCalendar)
-            groupInfoRow(title: "場所", message: "場所を選択または入力", inputMessage: $vm.mockGroup.palce, btnIcon: "location", action: vm.showMap)
-            
-            // MARK: メンバーリスト
-            VStack(alignment: .leading) {
-                Text("メンバー")
+        ScrollView {
+            VStack {
+                Text("グループ作成")
+                    .font(.title)
                     .fontWeight(.bold)
-                HStack {
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 24))
+                Spacer()
+                groupInfoRow(title: "グループ名", message: "グループ名を入力(必須)", inputMessage: $vm.mockGroup.groupName)
+                groupInfoRow(title: "メモ", message: "詳細情報を入力(任意)", inputMessage: $vm.mockGroup.groupMemo)
+                groupInfoRow(title: "日時", message: "", inputMessage: $vm.mockGroup.dateStr, isInputText: true, btnIcon: "calendar", action: vm.showCalendar)
+                groupInfoRow(title: "場所", message: "場所を選択または入力(任意)", inputMessage: $vm.mockGroup.palce, btnIcon: "location", action: vm.showMap)
+                
+                // MARK: メンバーリスト
+                VStack(alignment: .leading) {
+                    Text("メンバー")
+                        .fontWeight(.bold)
+                    HStack {
+                        Button {
+                            
+                        } label: {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.system(size: 24))
+                        }
+                        Text("メンバーを追加")
                     }
-                    Text("メンバーを追加")
-                }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-            }
-            .frame(maxWidth: .infinity)
-            
-            Spacer()
-            Button {
-                vm.isShowGroup = true
-            } label: {
-                Text("グループを作成")
-                    .fontWeight(.bold)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .foregroundColor(.white)
-                    .background(Color.blue)
+                    .background(Color(.systemGray6))
                     .cornerRadius(8)
+                }
+                .frame(maxWidth: .infinity)
+                
+                Spacer()
+                Button {
+                    vm.isCheckingInfo()
+                } label: {
+                    Text("グループを作成")
+                        .fontWeight(.bold)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(.white)
+                        .background(vm.isCreating ? Color.blue : Color.gray)
+                        .cornerRadius(8)
+                }
+                .disabled(!vm.isCreating)
+                .padding(.vertical)
+            }
+            .onTapGesture {
+                hideKeyboard()
             }
         }
-        .padding()
+        .padding(.horizontal)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear() {
             vm.initialDate()
         }
         .sheet(isPresented: $vm.showDatePicker) {
             DatePickerSheetView(vm: vm)
+        }
+        .fullScreenCover(isPresented: $vm.isShowGroup) {
+            if let groupId = vm.lastGroupId {
+                GroupView(groupId: groupId)
+            }
         }
     }
 }
@@ -80,6 +93,9 @@ extension AddNewGroupView {
             HStack {
                 TextField(message,text: inputMessage)
                     .disabled(isInputText)
+                    .onChange(of: vm.mockGroup.groupName) {
+                        vm.isCreating = !vm.mockGroup.groupName.isEmpty
+                    }
                 if let btnIcon, let action {
                     Button(action: action) {
                         Image(systemName: btnIcon)
@@ -92,6 +108,13 @@ extension AddNewGroupView {
         }
     }
 }
+
+//extension View {
+//    func hideKeyboard() {
+//        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+//                                        to: nil, from: nil, for: nil)
+//    }
+//}
 
 #Preview {
     AddNewGroupView()

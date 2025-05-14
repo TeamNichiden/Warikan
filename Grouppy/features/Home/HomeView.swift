@@ -50,7 +50,9 @@ struct HomeView: View {
                               title: "グループ作成",
                               message: "新しいグループを作成する")
                     
-                    groupCard(action: { /*グループリストを表示*/ },
+                    groupCard(action: {
+                        vm.checkList() // 既存グループをプリント
+                    },
                               btnImg: "list.dash",
                               title: "グループ確認",
                               message: "所属グループを確認する")
