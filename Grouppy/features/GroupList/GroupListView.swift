@@ -60,14 +60,6 @@ struct GroupListView: View {
                 }
             }
             .padding(.horizontal)
-            .navigationDestination(for: Route.self) { route in
-                switch route {
-                case .group(let id):
-                    GroupView(groupId: id)
-                default:
-                    EmptyView()
-                }
-            }
             .onTapGesture {
                 hideKeyboard()
             }

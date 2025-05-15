@@ -90,9 +90,6 @@ struct GroupView: View {
         .fullScreenCover(isPresented: $vm.backToHomeView) {
             HomeView()
         }
-        .onAppear() {
-            print("GroupViewId: \(vm.group.id)")
-        }
         
     }
 }

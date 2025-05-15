@@ -45,7 +45,6 @@ class AddNewGroupViewModel:ObservableObject {
         let newGroup = mockGroup
         MockGroupList.shared.groupList.append(newGroup)
         lastGroupId = newGroup.id
-//        let group = MockGroupList.shared.groupList.last
         mockGroup = MockGroupModel()
     }
 }
