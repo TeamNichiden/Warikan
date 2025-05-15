@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct GrouppyApp: App {
-    var body: some Scene {
-        WindowGroup {
-            LoginScreen()
-        }
+  @StateObject private var router = NavigationRouter()
+  var body: some Scene {
+    WindowGroup {
+      LoginScreen()
+        .environmentObject(router)
     }
+  }
 }
