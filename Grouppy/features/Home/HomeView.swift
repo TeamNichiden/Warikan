@@ -51,7 +51,7 @@ struct HomeView: View {
                               message: "新しいグループを作成する")
                     
                     groupCard(action: {
-                        vm.checkList() // 既存グループをプリント
+                        vm.goToGroupListView()
                     },
                               btnImg: "list.dash",
                               title: "グループ確認",
@@ -66,6 +66,8 @@ struct HomeView: View {
                     UserProfileView()
                 case .addNewGroup:
                     AddNewGroupView()
+                case .groupList:
+                    GroupListView()
                 }
             }
         }

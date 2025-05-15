@@ -10,6 +10,7 @@ import SwiftUI
 extension View {
     func viewButtonStyle() -> some View {
         self
+            .font(.headline)
             .foregroundColor(Color.white)
             .padding()
             .frame(maxWidth: .infinity)

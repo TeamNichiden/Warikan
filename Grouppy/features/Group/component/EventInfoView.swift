@@ -14,7 +14,6 @@ extension View {
                 Text("日時：")
                     .fontWeight(.bold)
                 Text(date)
-                    .foregroundColor(.gray)
             }
             HStack {
                 Text("場所：")

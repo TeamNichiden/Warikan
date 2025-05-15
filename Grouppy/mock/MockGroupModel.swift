@@ -7,19 +7,20 @@
 
 import Foundation
 
-struct MockGroupModel {
+class MockGroupModel: Identifiable, Hashable {
     let id = UUID()
     var groupName: String = ""
     var groupMemo: String = ""
     var dateStr: String = ""
     var palce: String = ""
     var member: [UserModel] = []
-}
-
-class MockGroupList {
-    static let shared = MockGroupList()
     
-    private init() {}
+    // MARK: - Hashable
+    static func == (lhs: MockGroupModel, rhs: MockGroupModel) -> Bool {
+        return lhs.id == rhs.id
+    }
     
-    var groupList: [MockGroupModel] = []
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }

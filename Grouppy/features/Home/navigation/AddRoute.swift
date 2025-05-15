@@ -10,4 +10,5 @@ import Foundation
 enum AddRoute: Hashable {
     case editProfile
     case addNewGroup
+    case groupList
 }

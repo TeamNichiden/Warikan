@@ -7,32 +7,10 @@
 
 import SwiftUI
 
-struct MockTableModel {
-    let id = UUID()
-    var totalPrice: Int = 0
-    var totalPriceStr: String = "0"
-}
-
-class GroupViewModel: ObservableObject {
-    @Published var mockTable = MockTableModel()
-    @Published var group: MockGroupModel
-    @Published var backToHomeView: Bool = false
-    
-    init(groupId: UUID) {
-        if let found = MockGroupList.shared.groupList.first(where: { $0.id == groupId }) {
-            self.group = found
-        } else {
-            self.group = MockGroupModel()
-        }
-    }
-}
-
 struct GroupView: View {
-    let groupId: UUID
     @StateObject var vm: GroupViewModel
     
     init(groupId: UUID) {
-        self.groupId = groupId
         _vm = StateObject(wrappedValue: GroupViewModel(groupId: groupId))
     }
     
@@ -50,19 +28,14 @@ struct GroupView: View {
                 Button {
                     // TODO: メンバー追加アクション
                 } label: {
-                    ZStack {
-                        Circle()
-                            .fill(Color(.systemGray6))
-                            .frame(width: 32)
-                        Image(systemName: "plus")
-                    }
+                    addButton()
                 }
             }
             .groupComponentStyle()
             
             // MARK: イベント情報
             // TODO: Mockデータを置き換える
-            EventInfoView(date: "2025年5月13日 14:00", place: "代々木公園", memo: "現金を持参してください")
+            EventInfoView(date: vm.group.dateStr, place: vm.group.palce, memo: vm.group.groupMemo)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .eventInfoStyle()
                 .padding(.horizontal)
@@ -88,22 +61,30 @@ struct GroupView: View {
             }
             .groupComponentStyle()
             // MARK: 支払いボタン
-            
-            Button {
+            VStack(spacing: 8) {
                 
-            } label: {
-                Text("支払い記録を追加")
-                    .viewButtonStyle()
+                Button {
+                    // 支払い記録を追加
+                } label: {
+                    Text("支払い記録を追加")
+                        .viewButtonStyle()
+                }
+                
+                Button {
+                    // 支払い完了
+                } label: {
+                    Text("支払い完了")
+                        .viewButtonStyle()
+                }
+                
+                Button {
+                    vm.backToHomeView = true
+                } label: {
+                    Text("戻る")
+                        .viewButtonStyle()
+                }
             }
-            
-            Button {
-                // MARK: TEST
-                vm.backToHomeView = true
-            } label: {
-                Text("支払い完了")
-                // 押されたら、履歴に「支払い完了」messageが追加される。
-                    .viewButtonStyle()
-            }
+            .padding(.top, 40)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .fullScreenCover(isPresented: $vm.backToHomeView) {
@@ -112,44 +93,6 @@ struct GroupView: View {
     }
 }
 
-extension View {
-    func groupComponentStyle() -> some View {
-        self
-            .padding()
-            .frame(alignment: .center)
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color(.systemGray4), lineWidth: 1)
-            )
-            .padding()
-    }
-}
-
-extension GroupView {
-    func miniHistoryRowStyle(message: String, price: String) -> some View {
-        HStack {
-            Circle()
-                .fill(.green)
-            Spacer()
-            Text(message)
-            Spacer()
-            Text(price)
-        }
-        .fixedSize()
-    }
-}
-
-extension View {
-    func eventInfoStyle() -> some View {
-        self
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(8)
-    }
-}
-
 #Preview {
-    let sampleGroup = MockGroupModel(groupName: "イベント")
-    MockGroupList.shared.groupList.append(sampleGroup)
-    return GroupView(groupId: sampleGroup.id)
+    GroupView(groupId: MockGroupModel.ID())
 }
