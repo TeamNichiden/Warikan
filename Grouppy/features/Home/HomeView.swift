@@ -13,9 +13,7 @@ struct HomeView: View {
     @EnvironmentObject var route: NavigationRouter
     
     var body: some View {
-        
-        NavigationStack(path: $route.path) {
-            VStack {
+        VStack {
                 
                 //MARK: HEADER
                 HStack {
@@ -62,19 +60,6 @@ struct HomeView: View {
             
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
-            .navigationDestination(for: Route.self) { route in
-                switch route {
-                case .editProfile:
-                    UserProfileView()
-                case .addGroup:
-                    AddNewGroupView()
-                case .groupList:
-                    GroupListView()
-                default:
-                    EmptyView()
-                }
-            }
-        }
     }
 }
 
