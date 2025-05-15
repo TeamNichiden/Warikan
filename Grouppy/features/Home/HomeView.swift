@@ -10,10 +10,11 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var vm = HomeViewModel()
+    @EnvironmentObject var route: NavigationRouter
     
     var body: some View {
         
-        NavigationStack(path: $vm.navigationPath) {
+        NavigationStack(path: $route.path) {
             VStack {
                 
                 //MARK: HEADER
@@ -26,7 +27,7 @@ struct HomeView: View {
                 .cornerRadius(10)
                 .overlay(alignment: .topTrailing) {
                     Button {
-                        vm.goToEdit()
+                        route.navigate(to: .editProfile)
                     } label: {
                         Text("編集")
                             .underline()
@@ -44,30 +45,33 @@ struct HomeView: View {
                         .padding()
                     
                     groupCard(action: {
-                        vm.goToAddNewGroup()
+                        route.navigate(to: .addGroup)
                     },
                               btnImg: "plus.circle.fill",
                               title: "グループ作成",
                               message: "新しいグループを作成する")
                     
                     groupCard(action: {
-                        vm.goToGroupListView()
+                        route.navigate(to: .groupList)
                     },
                               btnImg: "list.dash",
                               title: "グループ確認",
                               message: "所属グループを確認する")
                 }
             }
+            
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
-            .navigationDestination(for: AddRoute.self) { route in
+            .navigationDestination(for: Route.self) { route in
                 switch route {
                 case .editProfile:
                     UserProfileView()
-                case .addNewGroup:
+                case .addGroup:
                     AddNewGroupView()
                 case .groupList:
                     GroupListView()
+                default:
+                    EmptyView()
                 }
             }
         }

@@ -9,9 +9,10 @@ import SwiftUI
 
 struct GroupListView: View {
     @StateObject var vm = GroupListViewModel()
+    @EnvironmentObject var route: NavigationRouter
     
     var body: some View {
-//        NavigationStack(path: $vm.navigationPath) {
+//        NavigationStack(path: $route.path) {
             VStack {
                 HStack {
                     Spacer()
@@ -34,7 +35,7 @@ struct GroupListView: View {
                         if !vm.groupList.isEmpty {
                             ForEach(vm.groupList) { group in
                                 Button(action: {
-                                    vm.showSelectedGroup(group)
+                                    route.navigate(to: .group(id: group.id))
                                 }) {
                                     HStack {
                                         // TODO: グループアイコンを設定
@@ -59,19 +60,14 @@ struct GroupListView: View {
                 }
             }
             .padding(.horizontal)
-            .fullScreenCover(isPresented: $vm.isShowingGroupView) {
-                if let groupId = vm.selectedGroupId {
-                    GroupView(groupId: groupId)
-                } else {
-                    Text("グループが選択されていません")
+            .navigationDestination(for: Route.self) { route in
+                switch route {
+                case .group(let id):
+                    GroupView(groupId: id)
+                default:
+                    EmptyView()
                 }
             }
-//            .navigationDestination(for: AddGroupRoute.self) { route in
-//                switch route {
-//                case .group(let id):
-//                    GroupView(groupId: id)
-//                }
-//            }
             .onTapGesture {
                 hideKeyboard()
             }

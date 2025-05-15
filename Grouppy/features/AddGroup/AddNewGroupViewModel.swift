@@ -14,6 +14,7 @@ class AddNewGroupViewModel:ObservableObject {
     @Published var showDatePicker: Bool = false
     @Published var isCreating: Bool = false
     @Published var lastGroupId: UUID?
+    @Published var group: MockGroupModel?
     
     func initialDate() {
         let today = Date()
@@ -44,6 +45,7 @@ class AddNewGroupViewModel:ObservableObject {
         let newGroup = mockGroup
         MockGroupList.shared.groupList.append(newGroup)
         lastGroupId = newGroup.id
+//        let group = MockGroupList.shared.groupList.last
         mockGroup = MockGroupModel()
     }
 }

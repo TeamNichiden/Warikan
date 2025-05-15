@@ -7,8 +7,8 @@
 
 import Foundation
 
-enum AddRoute: Hashable {
-    case editProfile
-    case addNewGroup
-    case groupList
-}
+//enum AddRoute: Hashable {
+//    case editProfile
+//    case addNewGroup
+//    case groupList
+//}

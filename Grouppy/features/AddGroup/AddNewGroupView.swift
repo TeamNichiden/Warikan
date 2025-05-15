@@ -46,6 +46,7 @@ struct AddNewGroupView: View {
                 Spacer()
                 Button {
                     vm.isCheckingInfo()
+                    print("作成時のGroup: \(vm.mockGroup.id)")
                 } label: {
                     Text("グループを作成")
                         .fontWeight(.bold)
