@@ -10,4 +10,14 @@ final class NavigationRouter: ObservableObject {
   func pop() {
     path.removeLast()
   }
+
+  func popToRoot() {
+    path.removeAll()
+  }
+
+  func popUntil(_ predicate: (Route) -> Bool) {
+    while let last = path.last, !predicate(last) {
+      path.removeLast()
+    }
+  }
 }

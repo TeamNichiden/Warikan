@@ -27,12 +27,16 @@ struct GrouppyApp: App {
           switch route {
           case .editProfile:
             UserProfileView()
+              .environmentObject(router)
           case .addGroup:
             AddNewGroupView()
+              .environmentObject(router)
           case .groupList:
             GroupListView()
+              .environmentObject(router)
           case .group(let id):
             GroupView(groupId: id)
+              .environmentObject(router)
           }
         }
       }

@@ -78,7 +78,7 @@ struct GroupView: View {
                 }
                 
                 Button {
-                    vm.backToHomeView = true
+                    route.popToRoot()
                 } label: {
                     Text("戻る")
                         .viewButtonStyle()
@@ -87,10 +87,6 @@ struct GroupView: View {
             .padding(.top, 40)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .fullScreenCover(isPresented: $vm.backToHomeView) {
-            HomeView()
-        }
-        
     }
 }
 
