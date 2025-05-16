@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GroupView: View {
     @StateObject var vm: GroupViewModel
-    
+    @EnvironmentObject var route: NavigationRouter
     init(groupId: UUID) {
         _vm = StateObject(wrappedValue: GroupViewModel(groupId: groupId))
     }
