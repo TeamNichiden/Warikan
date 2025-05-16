@@ -10,13 +10,13 @@ import SwiftUI
 struct GroupView: View {
   @StateObject var vm: GroupViewModel
   @EnvironmentObject var route: NavigationRouter
-  init(groupId: UUID) {
+  init(groupId: String) {
     _vm = StateObject(wrappedValue: GroupViewModel(groupId: groupId))
   }
 
   var body: some View {
     // MARK: イベントタイトル
-    Text(vm.group.groupName)
+    Text(vm.group.name)
       .font(.title)
       .fontWeight(.bold)
     ScrollView {
@@ -44,18 +44,27 @@ struct GroupView: View {
   }
 
   private var eventInfoSection: some View {
-    EventInfoView(date: vm.group.dateStr, place: vm.group.palce, memo: vm.group.groupMemo)
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .eventInfoStyle()
-      .padding(.horizontal)
+    // 先頭イベントを仮で表示（なければ空文字）
+    let event = vm.group.events?.first
+      return EventInfoView(
+      date: event?.date.formatted() ?? "",
+      place: event?.place ?? "",
+      memo: event?.description ?? ""
+    )
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .eventInfoStyle()
+    .padding(.horizontal)
   }
 
   private var paymentStatusSection: some View {
-    VStack {
+    // 先頭イベントの合計金額を仮で表示
+    let event = vm.group.events?.first
+    let total = event?.transactions?.reduce(0) { $0 + $1.amount } ?? 0
+      return VStack {
       Text("支払い状況")
         .fontWeight(.bold)
         .frame(maxWidth: .infinity, alignment: .leading)
-      Text("¥ \(vm.mockTable.totalPriceStr)")
+      Text("¥ \(total)")
         .font(.title)
       Text("合計金額")
         .foregroundColor(.gray)
@@ -63,10 +72,15 @@ struct GroupView: View {
         .frame(height: 1)
         .foregroundStyle(Color(.systemGray4))
         .padding(.vertical)
-      // TODO: Mockデータを置き換える
-      MiniHistoryRow(message: "山田さんが支払いしました", price: "¥1000")
-      MiniHistoryRow(message: "山田さんが支払いしました", price: "¥1000")
-      MiniHistoryRow(message: "山田さんが支払いしました", price: "¥1000")
+      // TODO: 支払い履歴をevent.transactionsから生成
+      if let transactions = event?.transactions {
+        ForEach(transactions) { txn in
+          MiniHistoryRow(message: "\(txn.payerId)が支払いしました", price: "¥\(txn.amount)")
+        }
+      } else {
+        Text("支払い履歴なし")
+          .foregroundColor(.gray)
+      }
     }
     .groupComponentStyle()
   }
@@ -97,5 +111,5 @@ struct GroupView: View {
 }
 
 #Preview {
-  GroupView(groupId: MockGroupModel.ID())
+    GroupView(groupId: MockData.groups[0].id)
 }

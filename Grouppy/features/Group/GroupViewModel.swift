@@ -7,14 +7,18 @@
 import SwiftUI
 
 class GroupViewModel: ObservableObject {
-  @Published var mockTable = MockTableModel()
-  @Published var group: MockGroupModel
+  @Published var group: Group
+  private let repository: GroupRepository
 
-  init(groupId: UUID) {
-    if let found = MockGroupList.shared.groupList.first(where: { $0.id == groupId }) {
+  init(groupId: String, repository: GroupRepository = MockGroupRepository() ) {
+    self.repository = repository
+    if let found = repository.fetchGroups().first(where: { $0.id == groupId }) {
       self.group = found
     } else {
-      self.group = MockGroupModel()
+      // 空のGroupを生成（適宜修正）
+      self.group = Group(
+        id: groupId, name: "", description: "", ownerId: "", memberIds: [], eventIds: [],
+        createdAt: Date(), updatedAt: Date())
     }
   }
 }

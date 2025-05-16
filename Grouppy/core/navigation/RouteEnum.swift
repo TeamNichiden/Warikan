@@ -5,5 +5,5 @@ enum Route: Hashable {
     case editProfile
     case addGroup
     case groupList
-    case group(id: UUID)
+    case group(id: String)
 }
