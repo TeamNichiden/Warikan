@@ -7,43 +7,34 @@
 
 import Foundation
 
-class AddNewGroupViewModel:ObservableObject {
-    @Published var mockGroup = MockGroupModel()
-    @Published var isShowGroup: Bool = false
-    @Published var selectedDate = Date()
-    @Published var showDatePicker: Bool = false
-    @Published var isCreating: Bool = false
-    @Published var lastGroupId: UUID?
-    
-    func initialDate() {
-        let today = Date()
-        mockGroup.dateStr = today.dateToString(format: "yyyy年MM月dd日 HH時mm分")
+class AddNewGroupViewModel: ObservableObject {
+  @Published var group = Group(
+    id: UUID().uuidString, name: "", description: "", ownerId: "", memberIds: [], eventIds: [],
+    createdAt: Date(), updatedAt: Date())
+  @Published var isShowGroup: Bool = false
+  // TODO: 下記のプロパティはイベント追加画面で使用するが一旦コメントアウトで対応
+  //  @Published var selectedDate = Date()
+  //  @Published var showDatePicker: Bool = false
+  @Published var lastGroupId: String?
+  private let repository: GroupRepository
+
+  init(repository: GroupRepository = MockGroupRepository()) {
+    self.repository = repository
+  }
+
+  func isCheckingInfo() {
+    if !group.name.isEmpty {
+      addGroup()
+      isShowGroup = true
     }
-    
-    func showCalendar() {
-        showDatePicker = true
-    }
-    
-    func updateDate() {
-        mockGroup.dateStr = selectedDate.dateToString(format: "yyyy年MM月dd日 HH時mm分")
-        showDatePicker = false
-    }
-    
-    func showMap() {
-        
-    }
-    
-    func isCheckingInfo() {
-        if !mockGroup.groupName.isEmpty {
-            addGroup()
-            isShowGroup = true
-        }
-    }
-    
-    func addGroup() {
-        let newGroup = mockGroup
-        MockGroupList.shared.groupList.append(newGroup)
-        lastGroupId = newGroup.id
-        mockGroup = MockGroupModel()
-    }
+  }
+
+  func addGroup() {
+    let newGroup = group
+    repository.addGroup(newGroup)
+    lastGroupId = newGroup.id
+    group = Group(
+      id: UUID().uuidString, name: "", description: "", ownerId: "", memberIds: [], eventIds: [],
+      createdAt: Date(), updatedAt: Date())
+  }
 }

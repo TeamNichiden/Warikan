@@ -8,20 +8,61 @@
 import SwiftUI
 
 struct LoginScreen: View {
-    @State private var showHomeView:Bool = false
-    var body: some View {
-        VStack {
-            Text("ホーム画面へ")
-                .onTapGesture {
-                    showHomeView = true
-                }
+  @StateObject private var vm = LoginViewModel()
+  @EnvironmentObject var auth: AuthManager
+  @EnvironmentObject var route: NavigationRouter
+
+  var body: some View {
+    VStack(spacing: 24) {
+      Text("ログイン")
+        .font(.largeTitle)
+        .fontWeight(.bold)
+        .padding(.top, 40)
+      TextField("メールアドレス", text: $vm.email)
+        .textContentType(.emailAddress)
+        .keyboardType(.emailAddress)
+        .autocapitalization(.none)
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(8)
+      SecureField("パスワード", text: $vm.password)
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(8)
+      if let error = vm.errorMessage {
+        Text(error)
+          .foregroundColor(.red)
+          .font(.caption)
+      }
+      Button(action: {
+        vm.login { success in
+          if success {
+            auth.isLoggedIn = true
+            route.popToRoot()
+          }
         }
-        .fullScreenCover(isPresented: $showHomeView) {
-            HomeView()
+      }) {
+        if vm.isLoading {
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle())
+            .frame(maxWidth: .infinity)
+            .padding()
+        } else {
+          Text("ログイン")
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.blue)
+            .cornerRadius(8)
         }
+      }
+      .disabled(vm.isLoading || vm.email.isEmpty || vm.password.isEmpty)
+      Spacer()
     }
+    .padding(.horizontal, 24)
+  }
 }
 
 #Preview {
-    LoginScreen()
+  LoginScreen()
 }

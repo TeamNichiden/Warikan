@@ -6,21 +6,39 @@
 //
 import SwiftUI
 
-class UserProfileViewModel:ObservableObject {
-    @Published var user: UserModel
-    @Published var showDialog: Bool = false
-    @Published var showCamera: Bool = false
-    @Published var showLibrary: Bool = false
-    
-    init() {
-        self.user = UserModel.sampleModel
+class UserProfileViewModel: ObservableObject {
+  @Published var user: User
+  @Published var showIconChangeDialog: Bool = false
+  @Published var showCameraSheet: Bool = false
+  @Published var showLibrarySheet: Bool = false
+  private let imageUploadService: ImageUploadService
+
+  init(user: User? = nil, imageUploadService: ImageUploadService = LocalImageUploadService()) {
+    self.imageUploadService = imageUploadService
+    if let user = user {
+      self.user = user
+    } else {
+      self.user = User(id: "", name: "", email: "", userId: "", iconUrl: nil)
     }
-    
-    func resetEmail() {
-        
+  }
+
+  func updateIcon(with image: UIImage) {
+    imageUploadService.uploadImage(image) { [weak self] url in
+      DispatchQueue.main.async {
+        self?.user.iconUrl = url
+      }
     }
-    
-    func resetPassword() {
-        
-    }
+  }
+
+  func resetEmail() {
+    // TODO: メールアドレス再設定処理
+  }
+
+  func resetPassword() {
+    // TODO: パスワード再設定処理
+  }
+
+  func saveProfile() {
+    // TODO: プロフィール保存処理
+  }
 }

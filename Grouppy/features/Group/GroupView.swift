@@ -7,149 +7,109 @@
 
 import SwiftUI
 
-struct MockTableModel {
-    let id = UUID()
-    var totalPrice: Int = 0
-    var totalPriceStr: String = "0"
-}
-
-class GroupViewModel: ObservableObject {
-    @Published var mockTable = MockTableModel()
-    @Published var group: MockGroupModel
-    @Published var backToHomeView: Bool = false
-    
-    init(groupId: UUID) {
-        if let found = MockGroupList.shared.groupList.first(where: { $0.id == groupId }) {
-            self.group = found
-        } else {
-            self.group = MockGroupModel()
-        }
-    }
-}
-
 struct GroupView: View {
-    let groupId: UUID
-    @StateObject var vm: GroupViewModel
-    
-    init(groupId: UUID) {
-        self.groupId = groupId
-        _vm = StateObject(wrappedValue: GroupViewModel(groupId: groupId))
-    }
-    
-    var body: some View {
-        // MARK: イベントタイトル
-        Text(vm.group.groupName)
-            .font(.title)
-            .fontWeight(.bold)
-        ScrollView {
-            // MARK: メンバーリスト
-            VStack {
-                Text("メンバー")
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Button {
-                    // TODO: メンバー追加アクション
-                } label: {
-                    ZStack {
-                        Circle()
-                            .fill(Color(.systemGray6))
-                            .frame(width: 32)
-                        Image(systemName: "plus")
-                    }
-                }
-            }
-            .groupComponentStyle()
-            
-            // MARK: イベント情報
-            // TODO: Mockデータを置き換える
-            EventInfoView(date: "2025年5月13日 14:00", place: "代々木公園", memo: "現金を持参してください")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .eventInfoStyle()
-                .padding(.horizontal)
-            
-            VStack {
-                // MARK: 支払い状況テーブル
-                Text("支払い状況")
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Text("¥ \(vm.mockTable.totalPriceStr)")
-                    .font(.title)
-                Text("合計金額")
-                    .foregroundColor(.gray)
-                
-                Rectangle()
-                    .frame(height: 1)
-                    .foregroundStyle(Color(.systemGray4))
-                    .padding(.vertical)
-                // TODO: Mockデータを置き換える
-                miniHistoryRowStyle(message: "山田さんが支払いしました", price: "¥1000")
-                miniHistoryRowStyle(message: "山田さんが支払いしました", price: "¥1000")
-                miniHistoryRowStyle(message: "山田さんが支払いしました", price: "¥1000")
-            }
-            .groupComponentStyle()
-            // MARK: 支払いボタン
-            
-            Button {
-                
-            } label: {
-                Text("支払い記録を追加")
-                    .viewButtonStyle()
-            }
-            
-            Button {
-                // MARK: TEST
-                vm.backToHomeView = true
-            } label: {
-                Text("支払い完了")
-                // 押されたら、履歴に「支払い完了」messageが追加される。
-                    .viewButtonStyle()
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .fullScreenCover(isPresented: $vm.backToHomeView) {
-            HomeView()
-        }
-    }
-}
+  @StateObject var vm: GroupViewModel
+  @EnvironmentObject var route: NavigationRouter
+  init(groupId: String) {
+    _vm = StateObject(wrappedValue: GroupViewModel(groupId: groupId))
+  }
 
-extension View {
-    func groupComponentStyle() -> some View {
-        self
-            .padding()
-            .frame(alignment: .center)
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color(.systemGray4), lineWidth: 1)
-            )
-            .padding()
+  var body: some View {
+    // MARK: イベントタイトル
+    Text(vm.group.name)
+      .font(.title)
+      .fontWeight(.bold)
+    ScrollView {
+      memberListSection
+      eventInfoSection
+      paymentStatusSection
+      actionButtonsSection
     }
-}
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+  }
 
-extension GroupView {
-    func miniHistoryRowStyle(message: String, price: String) -> some View {
-        HStack {
-            Circle()
-                .fill(.green)
-            Spacer()
-            Text(message)
-            Spacer()
-            Text(price)
+  // MARK: - Subviews
+  private var memberListSection: some View {
+    VStack {
+      Text("メンバー")
+        .fontWeight(.bold)
+        .frame(maxWidth: .infinity, alignment: .leading)
+      Button {
+        // TODO: メンバー追加アクション
+      } label: {
+        addButton()
+      }
+    }
+    .groupComponentStyle()
+  }
+
+  private var eventInfoSection: some View {
+    // 先頭イベントを仮で表示（なければ空文字）
+    let event = vm.group.events?.first
+    return EventInfoView(
+      date: event?.date.formatted() ?? "",
+      place: event?.place ?? "",
+      memo: event?.description ?? ""
+    )
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .eventInfoStyle()
+    .padding(.horizontal)
+  }
+
+  private var paymentStatusSection: some View {
+    // 先頭イベントの合計金額を仮で表示
+    let event = vm.group.events?.first
+    let total = event?.transactions?.reduce(0) { $0 + $1.amount } ?? 0
+    return VStack {
+      Text("支払い状況")
+        .fontWeight(.bold)
+        .frame(maxWidth: .infinity, alignment: .leading)
+      Text("¥ \(total)")
+        .font(.title)
+      Text("合計金額")
+        .foregroundColor(.gray)
+      Rectangle()
+        .frame(height: 1)
+        .foregroundStyle(Color(.systemGray4))
+        .padding(.vertical)
+      // TODO: 支払い履歴をevent.transactionsから生成
+      if let transactions = event?.transactions {
+        ForEach(transactions) { txn in
+          MiniHistoryRow(message: "\(txn.payerId)が支払いしました", price: "¥\(txn.amount)")
         }
-        .fixedSize()
+      } else {
+        Text("支払い履歴なし")
+          .foregroundColor(.gray)
+      }
     }
-}
+    .groupComponentStyle()
+  }
 
-extension View {
-    func eventInfoStyle() -> some View {
-        self
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(8)
+  private var actionButtonsSection: some View {
+    VStack(spacing: 8) {
+      Button {
+        // 支払い記録を追加
+      } label: {
+        Text("支払い記録を追加")
+          .viewButtonStyle()
+      }
+      Button {
+        // 支払い完了
+      } label: {
+        Text("支払い完了")
+          .viewButtonStyle()
+      }
+      Button {
+        route.popToRoot()
+      } label: {
+        Text("戻る")
+          .viewButtonStyle()
+      }
     }
+    .padding(.top, 40)
+  }
 }
 
 #Preview {
-    let sampleGroup = MockGroupModel(groupName: "イベント")
-    MockGroupList.shared.groupList.append(sampleGroup)
-    return GroupView(groupId: sampleGroup.id)
+  GroupView(groupId: MockData.groups[0].id)
 }
