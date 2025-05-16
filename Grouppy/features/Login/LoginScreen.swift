@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginScreen: View {
   @StateObject private var vm = LoginViewModel()
+  @EnvironmentObject var auth: AuthManager
   @EnvironmentObject var route: NavigationRouter
 
   var body: some View {
@@ -36,7 +37,8 @@ struct LoginScreen: View {
       Button(action: {
         vm.login { success in
           if success {
-            route.navigate(to: .home)
+            auth.isLoggedIn = true
+            route.popToRoot()
           }
         }
       }) {
