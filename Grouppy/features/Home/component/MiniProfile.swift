@@ -20,10 +20,10 @@ struct MiniProfile: View {
             
             HStack {
                 VStack(alignment: .leading,spacing: 10) {
-                    Text(UserModel.sampleModel.name)
+                    Text(MockData.authUser.name)
                         .fontWeight(.bold)
                         .font(.title2)
-                    Text("@\(UserModel.sampleModel.userID)")
+                    Text("@\(MockData.authUser.userId)")
                         .foregroundColor(.gray)
                         .font(.body)
                 }
