@@ -52,8 +52,8 @@ struct GroupListView: View {
   private var groupListView: some View {
     ScrollView(showsIndicators: false) {
       VStack(spacing: 16) {
-        if !vm.groupList.isEmpty {
-          ForEach(vm.groupList) { group in
+        if !vm.filteredGroupList.isEmpty {
+          ForEach(vm.filteredGroupList) { group in
             groupRow(for: group)
           }
         } else {
