@@ -14,13 +14,13 @@ struct DatePickerSheetView: View {
     
     var body: some View {
         VStack {
-            DatePicker(
-                "日付を選択",
-                selection:  $vm.selectedDate,
-                displayedComponents: [.date, .hourAndMinute]
-            )
-            .datePickerStyle(.graphical)
-            .padding(.vertical)
+//            DatePicker(
+//                "日付を選択",
+//                selection:  $vm.selectedDate,
+//                displayedComponents: [.date, .hourAndMinute]
+//            )
+//            .datePickerStyle(.graphical)
+//            .padding(.vertical)
             
             Button {
 //                vm.updateDate()
