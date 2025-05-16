@@ -46,7 +46,7 @@ struct GroupView: View {
   private var eventInfoSection: some View {
     // 先頭イベントを仮で表示（なければ空文字）
     let event = vm.group.events?.first
-      return EventInfoView(
+    return EventInfoView(
       date: event?.date.formatted() ?? "",
       place: event?.place ?? "",
       memo: event?.description ?? ""
@@ -60,7 +60,7 @@ struct GroupView: View {
     // 先頭イベントの合計金額を仮で表示
     let event = vm.group.events?.first
     let total = event?.transactions?.reduce(0) { $0 + $1.amount } ?? 0
-      return VStack {
+    return VStack {
       Text("支払い状況")
         .fontWeight(.bold)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -111,5 +111,5 @@ struct GroupView: View {
 }
 
 #Preview {
-    GroupView(groupId: MockData.groups[0].id)
+  GroupView(groupId: MockData.groups[0].id)
 }

@@ -21,7 +21,7 @@ struct MiniProfile: View {
           Text(user.name)
             .fontWeight(.bold)
             .font(.title2)
-            Text("@\(user.userId)")
+          Text("@\(user.userId)")
             .foregroundColor(.gray)
             .font(.body)
         }

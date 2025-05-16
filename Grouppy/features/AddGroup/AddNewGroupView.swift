@@ -21,7 +21,6 @@ struct AddNewGroupView: View {
         Spacer()
         GroupInfoRow(title: "グループ名", message: "グループ名を入力(必須)", inputMessage: $vm.group.name)
         GroupInfoRow(title: "メモ", message: "詳細情報を入力(任意)", inputMessage: $vm.group.description)
-        
 
         // MARK: メンバーリスト
         VStack(alignment: .leading) {

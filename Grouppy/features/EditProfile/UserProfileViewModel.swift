@@ -11,12 +11,22 @@ class UserProfileViewModel: ObservableObject {
   @Published var showIconChangeDialog: Bool = false
   @Published var showCameraSheet: Bool = false
   @Published var showLibrarySheet: Bool = false
+  private let imageUploadService: ImageUploadService
 
-  init(user: User? = nil) {
+  init(user: User? = nil, imageUploadService: ImageUploadService = LocalImageUploadService()) {
+    self.imageUploadService = imageUploadService
     if let user = user {
       self.user = user
     } else {
       self.user = User(id: "", name: "", email: "", userId: "", iconUrl: nil)
+    }
+  }
+
+  func updateIcon(with image: UIImage) {
+    imageUploadService.uploadImage(image) { [weak self] url in
+      DispatchQueue.main.async {
+        self?.user.iconUrl = url
+      }
     }
   }
 

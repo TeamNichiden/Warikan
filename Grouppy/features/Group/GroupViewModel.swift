@@ -10,7 +10,7 @@ class GroupViewModel: ObservableObject {
   @Published var group: Group
   private let repository: GroupRepository
 
-  init(groupId: String, repository: GroupRepository = MockGroupRepository() ) {
+  init(groupId: String, repository: GroupRepository = MockGroupRepository()) {
     self.repository = repository
     if let found = repository.fetchGroups().first(where: { $0.id == groupId }) {
       self.group = found

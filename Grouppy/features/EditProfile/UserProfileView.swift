@@ -44,11 +44,20 @@ struct UserProfileView: View {
       }
     }
     .fullScreenCover(isPresented: $vm.showCameraSheet) {
-      CameraView(icon: $vm.user.icon)
-        .ignoresSafeArea()
+      CameraView(
+        icon: .constant(nil),
+        onImagePicked: { image in
+          vm.updateIcon(with: image)
+        }
+      )
+      .ignoresSafeArea()
     }
     .sheet(isPresented: $vm.showLibrarySheet) {
-      PhotoLibraryView(icon: $vm.user.icon)
+      PhotoLibraryView(
+        icon: .constant(nil),
+        onImagePicked: { image in
+          vm.updateIcon(with: image)
+        })
     }
     Spacer()
   }
@@ -56,17 +65,21 @@ struct UserProfileView: View {
   // MARK: - Subviews
   private var ProfileIconSection: some View {
     VStack {
-      if let icon = vm.user.icon {
-        Image(uiImage: icon)
-          .resizable()
-          .scaledToFill()
-          .frame(width: 100, height: 100)
-          .clipShape(Circle())
+      if let url = vm.user.iconUrl {
+        AsyncImage(url: url) { image in
+          image.resizable()
+            .scaledToFill()
+            .frame(width: 100, height: 100)
+            .clipShape(Circle())
+        } placeholder: {
+          Circle()
+            .fill(Color(.systemGray6))
+            .frame(width: 100)
+        }
       } else {
         Circle()
           .fill(Color(.systemGray6))
           .frame(width: 100)
-          .padding()
       }
       Button(action: {
         vm.showIconChangeDialog = true
