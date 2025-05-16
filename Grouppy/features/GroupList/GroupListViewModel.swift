@@ -7,15 +7,22 @@
 import SwiftUI
 
 class GroupListViewModel: ObservableObject {
+  private let repository: GroupRepository
   @Published var searchMessage: String = ""
-  @Published var groupList: [MockGroupModel] = MockGroupList.shared.groupList
+  @Published var groupList: [Group] = []
 
-  // 検索バーの入力に応じたフィルタ済みリスト
-  var filteredGroupList: [MockGroupModel] {
+  init(repository: GroupRepository = MockGroupRepository()) {
+    self.repository = repository
+    self.groupList = repository.fetchGroups()
+  }
+
+  var filteredGroupList: [Group] {
     if searchMessage.isEmpty {
       return groupList
     } else {
-      return groupList.filter { $0.groupName.contains(searchMessage) }
+      return groupList.filter {
+        $0.name.contains(searchMessage) || $0.description.contains(searchMessage)
+      }
     }
   }
   // 本来はAPIやDBから取得する

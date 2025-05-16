@@ -7,13 +7,17 @@
 import SwiftUI
 
 class UserProfileViewModel: ObservableObject {
-  @Published var user: UserModel
+  @Published var user: User
   @Published var showIconChangeDialog: Bool = false
   @Published var showCameraSheet: Bool = false
   @Published var showLibrarySheet: Bool = false
 
-  init(user: UserModel = UserModel.sampleModel) {
-    self.user = user
+  init(user: User? = nil) {
+    if let user = user {
+      self.user = user
+    } else {
+      self.user = User(id: "", name: "", email: "", userId: "", iconUrl: nil)
+    }
   }
 
   func resetEmail() {

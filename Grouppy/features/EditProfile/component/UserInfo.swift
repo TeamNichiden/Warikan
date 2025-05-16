@@ -16,7 +16,7 @@ struct UserInfo: View {
   var body: some View {
     VStack {
       InfoRow(title: "ニックネーム", inputText: $vm.user.name)
-      InfoRow(title: "アカウントID", inputText: $vm.user.userID)
+        InfoRow(title: "アカウントID", inputText: $vm.user.userId)
       InfoRow(
         title: "メールアドレス", inputText: $vm.user.email, isEditable: false, submitLabel: "再設定",
         submitAction: vm.resetEmail)

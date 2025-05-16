@@ -64,13 +64,13 @@ struct GroupListView: View {
     }
   }
 
-  private func groupRow(for group: MockGroupModel) -> some View {
+  private func groupRow(for group: Group) -> some View {
     Button(action: {
       route.navigate(to: .group(id: group.id))
     }) {
       HStack {
         Image(systemName: "person.3.fill")  // 仮のグループアイコン
-        Text(group.groupName)
+        Text(group.name)
       }
       .padding()
       .frame(maxWidth: .infinity, minHeight: 50)

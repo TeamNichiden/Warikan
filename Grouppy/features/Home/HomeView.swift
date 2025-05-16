@@ -16,7 +16,7 @@ struct HomeView: View {
 
       //MARK: HEADER
       HStack {
-        MiniProfile()
+          MiniProfile(user: MockData.authUser)
       }
       .padding()
       .frame(maxWidth: .infinity)
