@@ -19,14 +19,9 @@ struct AddNewGroupView: View {
           .font(.title)
           .fontWeight(.bold)
         Spacer()
-        GroupInfoRow(title: "グループ名", message: "グループ名を入力(必須)", inputMessage: $vm.mockGroup.groupName)
-        GroupInfoRow(title: "メモ", message: "詳細情報を入力(任意)", inputMessage: $vm.mockGroup.groupMemo)
-        GroupInfoRow(
-          title: "日時", message: "", inputMessage: $vm.mockGroup.dateStr, isInputText: true,
-          btnIcon: "calendar", action: vm.showCalendar)
-        GroupInfoRow(
-          title: "場所", message: "場所を選択または入力(任意)", inputMessage: $vm.mockGroup.palce,
-          btnIcon: "location", action: vm.showMap)
+        GroupInfoRow(title: "グループ名", message: "グループ名を入力(必須)", inputMessage: $vm.group.name)
+        GroupInfoRow(title: "メモ", message: "詳細情報を入力(任意)", inputMessage: $vm.group.description)
+        
 
         // MARK: メンバーリスト
         VStack(alignment: .leading) {
@@ -60,10 +55,10 @@ struct AddNewGroupView: View {
             .padding()
             .frame(maxWidth: .infinity)
             .foregroundColor(.white)
-            .background(vm.mockGroup.groupName.isEmpty ? Color.gray : Color.blue)
+            .background(vm.group.name.isEmpty ? Color.gray : Color.blue)
             .cornerRadius(8)
         }
-        .disabled(vm.mockGroup.groupName.isEmpty)
+        .disabled(vm.group.name.isEmpty)
         .padding(.vertical)
       }
       .onTapGesture {
@@ -72,12 +67,6 @@ struct AddNewGroupView: View {
     }
     .padding(.horizontal)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .onAppear {
-      vm.initialDate()
-    }
-    .sheet(isPresented: $vm.showDatePicker) {
-      DatePickerSheetView(vm: vm)
-    }
   }
 }
 

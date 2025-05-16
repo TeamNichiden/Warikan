@@ -8,42 +8,33 @@
 import Foundation
 
 class AddNewGroupViewModel: ObservableObject {
-  @Published var mockGroup = MockGroupModel()
+  @Published var group = Group(
+    id: UUID().uuidString, name: "", description: "", ownerId: "", memberIds: [], eventIds: [],
+    createdAt: Date(), updatedAt: Date())
   @Published var isShowGroup: Bool = false
-  @Published var selectedDate = Date()
-  @Published var showDatePicker: Bool = false
-  @Published var lastGroupId: UUID?
-  @Published var group: MockGroupModel?
+// TODO: 下記のプロパティはイベント追加画面で使用するが一旦コメントアウトで対応
+//  @Published var selectedDate = Date()
+//  @Published var showDatePicker: Bool = false
+  @Published var lastGroupId: String?
+  private let repository: GroupRepository
 
-  func initialDate() {
-    let today = Date()
-    mockGroup.dateStr = today.dateToString(format: "yyyy年MM月dd日 HH時mm分")
-  }
-
-  func showCalendar() {
-    showDatePicker = true
-  }
-
-  func updateDate() {
-    mockGroup.dateStr = selectedDate.dateToString(format: "yyyy年MM月dd日 HH時mm分")
-    showDatePicker = false
-  }
-
-  func showMap() {
-
+  init(repository: GroupRepository = MockGroupRepository()) {
+    self.repository = repository
   }
 
   func isCheckingInfo() {
-    if !mockGroup.groupName.isEmpty {
+    if !group.name.isEmpty {
       addGroup()
       isShowGroup = true
     }
   }
 
   func addGroup() {
-    let newGroup = mockGroup
-    MockGroupList.shared.groupList.append(newGroup)
+    let newGroup = group
+    repository.addGroup(newGroup)
     lastGroupId = newGroup.id
-    mockGroup = MockGroupModel()
+    group = Group(
+      id: UUID().uuidString, name: "", description: "", ownerId: "", memberIds: [], eventIds: [],
+      createdAt: Date(), updatedAt: Date())
   }
 }

@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// TODO: このコンポーネントはイベント追加画面で利用
+
 struct DatePickerSheetView: View {
     @ObservedObject var vm: AddNewGroupViewModel
     
@@ -21,7 +23,7 @@ struct DatePickerSheetView: View {
             .padding(.vertical)
             
             Button {
-                vm.updateDate()
+//                vm.updateDate()
             } label: {
                 Text("日付確定")
                     .padding()
