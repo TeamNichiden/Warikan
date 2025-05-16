@@ -128,41 +128,41 @@ struct SignupScreen: View {
 }
 
 struct SignupInputFields: View {
-  @Binding var email: String
-  @Binding var password: String
-  @Binding var passwordConfirm: String
-  @Binding var isPasswordVisible: Bool
-  var body: some View {
-    Group {
-      TextField("メールアドレス", text: $email)
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(10)
-        .padding(.bottom, 8)
-      ZStack(alignment: .trailing) {
-        if isPasswordVisible {
-          TextField("パスワード", text: $password)
-        } else {
-          SecureField("パスワード", text: $password)
+    @Binding var email: String
+    @Binding var password: String
+    @Binding var passwordConfirm: String
+    @Binding var isPasswordVisible: Bool
+    var body: some View {
+        VStack(spacing: 0) {
+            TextField("メールアドレス", text: $email)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding(.bottom, 8)
+            ZStack(alignment: .trailing) {
+                if isPasswordVisible {
+                    TextField("パスワード", text: $password)
+                } else {
+                    SecureField("パスワード", text: $password)
+                }
+                Button(action: { isPasswordVisible.toggle() }) {
+                    Text(isPasswordVisible ? "非表示" : "表示")
+                        .foregroundColor(.blue)
+                        .font(.caption)
+                }
+                .padding(.trailing, 12)
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(10)
+            .padding(.bottom, 8)
+            SecureField("パスワード確認", text: $passwordConfirm)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding(.bottom, 8)
         }
-        Button(action: { isPasswordVisible.toggle() }) {
-          Text(isPasswordVisible ? "非表示" : "表示")
-            .foregroundColor(.blue)
-            .font(.caption)
-        }
-        .padding(.trailing, 12)
-      }
-      .padding()
-      .background(Color(.systemGray6))
-      .cornerRadius(10)
-      .padding(.bottom, 8)
-      SecureField("パスワード確認", text: $passwordConfirm)
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(10)
-        .padding(.bottom, 8)
     }
-  }
 }
 
 struct AgreementSection: View {
