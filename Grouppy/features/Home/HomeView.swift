@@ -7,64 +7,63 @@
 
 import SwiftUI
 
-
 struct HomeView: View {
-    @StateObject var vm = HomeViewModel()
-    @EnvironmentObject var route: NavigationRouter
-    
-    var body: some View {
-        VStack {
-                
-                //MARK: HEADER
-                HStack {
-                    MiniProfile()
-                }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color(.systemGray6).opacity(0.6))
-                .cornerRadius(10)
-                .overlay(alignment: .topTrailing) {
-                    Button {
-                        route.navigate(to: .editProfile)
-                    } label: {
-                        Text("編集")
-                            .underline()
-                            .padding()
-                    }
-                }
-                
-                Spacer()
-                
-                //MARK: FOOTER
-                VStack(alignment: .leading) {
-                    Text("グループ管理")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .padding()
-                    
-                    groupCard(action: {
-                        route.navigate(to: .addGroup)
-                    },
-                              btnImg: "plus.circle.fill",
-                              title: "グループ作成",
-                              message: "新しいグループを作成する")
-                    
-                    groupCard(action: {
-                        route.navigate(to: .groupList)
-                    },
-                              btnImg: "list.dash",
-                              title: "グループ確認",
-                              message: "所属グループを確認する")
-                }
-            }
-            
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+  @StateObject var vm = HomeViewModel()
+  @EnvironmentObject var route: NavigationRouter
+
+  var body: some View {
+    VStack {
+
+      //MARK: HEADER
+      HStack {
+        MiniProfile()
+      }
+      .padding()
+      .frame(maxWidth: .infinity)
+      .background(Color(.systemGray6).opacity(0.6))
+      .cornerRadius(10)
+      .overlay(alignment: .topTrailing) {
+        Button {
+          route.navigate(to: .editProfile)
+        } label: {
+          Text("編集")
+            .underline()
             .padding()
+        }
+      }
+
+      Spacer()
+
+      //MARK: FOOTER
+      VStack(alignment: .leading) {
+        Text("グループ管理")
+          .font(.title2)
+          .fontWeight(.bold)
+          .padding()
+
+        GroupCard(
+          action: { route.navigate(to: .addGroup) },
+          btnImg: "plus.circle.fill",
+          title: "グループ作成",
+          message: "新しいグループを作成する"
+        )
+
+        GroupCard(
+          action: { route.navigate(to: .groupList) },
+          btnImg: "list.dash",
+          title: "グループ確認",
+          message: "所属グループを確認する"
+        )
+      }
     }
+
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .padding()
+  }
 }
 
 #Preview {
-    NavigationStack {
-        HomeView()
-    }
+  NavigationStack {
+    HomeView()
+  }
 }
