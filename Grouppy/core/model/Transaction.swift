@@ -5,6 +5,7 @@ struct Transaction: Identifiable, Codable, Equatable {
   var eventId: String  // 関連イベントUUID
   var payerId: String  // 支払者UUID
   var payeeIds: [String]  // 割り勘対象者UUID配列
+  var payeesPaid: [String]  // 支払済みの割り勘対象者UUID配列
   var amount: Int
   var totalAmount: Int
   var memo: String
