@@ -66,7 +66,7 @@ struct GroupView: View {
         amount: txn.amount,
         description: txn.memo,
         members: txn.payees?.map { $0.name } ?? [],
-        paidMembers: []  // すでに支払った人の情報があればここにセット
+        paidMembers: txn.payeesPaid.map { $0 }
       )
     }
     return VStack {
