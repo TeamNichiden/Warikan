@@ -57,30 +57,20 @@ struct GroupView: View {
   }
 
   private var paymentStatusSection: some View {
-    // 先頭イベントの合計金額を仮で表示
     let event = vm.group.events?.first
-    let total = event?.transactions?.reduce(0) { $0 + $1.amount } ?? 0
+    let transactions = event?.transactions ?? []
+    // Card型配列に変換（Transactionのpayer, payeesのnameを利用）
+    @State var cards: [Card] = transactions.map { txn in
+      Card(
+        payerId: txn.payer?.name ?? "不明",
+        amount: txn.amount,
+        description: txn.memo,
+        members: txn.payees?.map { $0.name } ?? [],
+        paidMembers: []  // すでに支払った人の情報があればここにセット
+      )
+    }
     return VStack {
-      Text("支払い状況")
-        .fontWeight(.bold)
-        .frame(maxWidth: .infinity, alignment: .leading)
-      Text("¥ \(total)")
-        .font(.title)
-      Text("合計金額")
-        .foregroundColor(.gray)
-      Rectangle()
-        .frame(height: 1)
-        .foregroundStyle(Color(.systemGray4))
-        .padding(.vertical)
-      // TODO: 支払い履歴をevent.transactionsから生成
-      if let transactions = event?.transactions {
-        ForEach(transactions) { txn in
-          MiniHistoryRow(message: "\(txn.payerId)が支払いしました", price: "¥\(txn.amount)")
-        }
-      } else {
-        Text("支払い履歴なし")
-          .foregroundColor(.gray)
-      }
+      CardStackView(cards: $cards)
     }
     .groupComponentStyle()
   }
@@ -97,12 +87,6 @@ struct GroupView: View {
         // 支払い完了
       } label: {
         Text("支払い完了")
-          .viewButtonStyle()
-      }
-      Button {
-        route.popToRoot()
-      } label: {
-        Text("戻る")
           .viewButtonStyle()
       }
     }
