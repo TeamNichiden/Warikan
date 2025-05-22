@@ -10,32 +10,23 @@ struct Card: Identifiable {
 }
 
 struct CardStackView: View {
-  @Binding var cards: [Card]
-
+    @Binding var cards: [Card]
+    
     var body: some View {
-        ZStack {
-            TabView {
-                ForEach(cards.reversed()) { card in
-                    CardView(
-                        card: card
-                    )
-                }
+        TabView {
+            ForEach(cards.reversed()) { card in
+                CardView(
+                    card: card
+                )
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-            .frame(height: 400)
-
         }
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+        .frame(height: 400)
     }
-
-  private func index(of card: Card) -> Int {
-    return cards.firstIndex(where: { $0.id == card.id }) ?? 0
-  }
 }
 
 struct CardView: View {
   let card: Card
-
-  @State private var offset = CGSize.zero
 
   var body: some View {
         VStack(alignment: .leading, spacing: 10) {
