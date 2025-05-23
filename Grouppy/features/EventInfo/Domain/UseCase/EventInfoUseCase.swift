@@ -1,15 +1,15 @@
 import Foundation
 
-protocol EventUseCase {
+protocol EventInfoUseCase {
   func fetchEvents() -> [Event]
   func fetchEvent(id: String) -> Event?
   func addEvent(_ event: Event)
 }
 
-class EventUseCaseImpl: EventUseCase {
-  private let repository: EventRepository
+class EventInfoUseCaseImpl: EventInfoUseCase {
+  private let repository: EventInfoRepository
 
-  init(repository: EventRepository = MockEventRepositoryImpl()) {
+  init(repository: EventInfoRepository = MockEventInfoRepositoryImpl()) {
     self.repository = repository
   }
 

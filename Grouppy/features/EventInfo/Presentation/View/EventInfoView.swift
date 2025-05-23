@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EventView: View {
+struct EventInfoView: View {
   let eventId: String
   @StateObject private var vm: EventViewModel
   @EnvironmentObject var route: NavigationRouter
@@ -115,5 +115,5 @@ struct EventView: View {
 }
 
 #Preview {
-  EventView(eventId: "sampleEventId")
+  EventInfoView(eventId: "sampleEventId")
 }
