@@ -1,6 +1,6 @@
 import Foundation
 //
-//  GroupViewModel.swift
+//  EventViewModel.swift
 //  Grouppy
 //
 //  Created by cmStudent on 2025/05/14.
