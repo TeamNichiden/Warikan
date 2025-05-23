@@ -25,14 +25,14 @@ struct GrouppyApp: App {
             case .editProfile:
               UserProfileView()
                 .environmentObject(router)
-            case .addGroup:
-              AddNewGroupView()
+            case .addEvent:
+              AddNewEventView()
                 .environmentObject(router)
-            case .groupList:
-              GroupListView()
+            case .eventList:
+              EventListView()
                 .environmentObject(router)
-            case .group(let id):
-              GroupView(groupId: id)
+            case .event(let id):
+                EventView(eventId: id)
                 .environmentObject(router)
             }
           }
