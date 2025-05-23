@@ -1,15 +1,15 @@
 import Foundation
 
-protocol GroupRepository {
-  func fetchGroups() -> [Group]
-  func addGroup(_ group: Group)
+protocol EventRepository {
+  func fetchEvents() -> [Event]
+  func addEvent(_ event: Event)
 }
 
-class MockGroupRepository: GroupRepository {
-  func fetchGroups() -> [Group] {
-    MockData.groups
+class MockEventRepositoryImpl: EventRepository {
+  func fetchEvents() -> [Event] {
+    MockData.events
   }
-  func addGroup(_ group: Group) {
-    MockData.groups.append(group)
+  func addEvent(_ event: Event) {
+    MockData.events.append(event)
   }
 }
