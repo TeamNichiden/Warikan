@@ -1,11 +1,11 @@
 import Foundation
 
-protocol EventRepository {
+protocol EventInfoRepository {
   func fetchEvents() -> [Event]
   func addEvent(_ event: Event)
 }
 
-class MockEventRepositoryImpl: EventRepository {
+class MockEventInfoRepositoryImpl: EventInfoRepository {
   func fetchEvents() -> [Event] {
     MockData.events
   }

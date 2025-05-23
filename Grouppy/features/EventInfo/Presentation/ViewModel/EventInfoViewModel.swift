@@ -1,18 +1,18 @@
 import Foundation
 //
-//  EventViewModel.swift
+//  EventInfoViewModel.swift
 //  Grouppy
 //
 //  Created by cmStudent on 2025/05/14.
 //
 import SwiftUI
 
-class EventViewModel: ObservableObject {
+class EventInfoViewModel: ObservableObject {
   @Published var event: Event?
-  private let repository: EventRepository
+  private let repository: EventInfoRepository
   private let eventId: String
 
-  init(eventId: String, repository: EventRepository = MockEventRepositoryImpl()) {
+  init(eventId: String, repository: EventInfoRepository = MockEventInfoRepositoryImpl()) {
     self.eventId = eventId
     self.repository = repository
     fetchEvent()

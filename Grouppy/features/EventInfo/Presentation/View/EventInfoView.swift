@@ -7,35 +7,35 @@
 
 import SwiftUI
 
-struct EventView: View {
+struct EventInfoView: View {
   let eventId: String
-  @StateObject private var vm: EventViewModel
+  @StateObject private var vm: EventInfoViewModel
   @EnvironmentObject var route: NavigationRouter
 
   init(eventId: String) {
     self.eventId = eventId
-    _vm = StateObject(wrappedValue: EventViewModel(eventId: eventId))
+    _vm = StateObject(wrappedValue: EventInfoViewModel(eventId: eventId))
   }
 
-    var body: some View {
-        VStack(spacing: 0) {
-            if let event = vm.event {
-                // イベントタイトル
-                Text(event.title)
-                    .font(.title)
-                    .fontWeight(.bold)
-                ScrollView {
-                    memberListSection(event: event)
-                    eventInfoSection(event: event)
-                    paymentStatusSection(event: event)
-                    actionButtonsSection
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
-                ProgressView()
-            }
+  var body: some View {
+    VStack(spacing: 0) {
+      if let event = vm.event {
+        // イベントタイトル
+        Text(event.title)
+          .font(.title)
+          .fontWeight(.bold)
+        ScrollView {
+          memberListSection(event: event)
+          eventInfoSection(event: event)
+          paymentStatusSection(event: event)
+          actionButtonsSection
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+      } else {
+        ProgressView()
+      }
     }
+  }
 
   // MARK: - Subviews
   private func memberListSection(event: Event) -> some View {
@@ -53,7 +53,7 @@ struct EventView: View {
   }
 
   private func eventInfoSection(event: Event) -> some View {
-    EventInfoView(
+    EventDetailView(
       date: event.date.formatted(),
       place: event.place,
       memo: event.description
@@ -115,5 +115,5 @@ struct EventView: View {
 }
 
 #Preview {
-  EventView(eventId: "sampleEventId")
+  EventInfoView(eventId: "sampleEventId")
 }

@@ -7,11 +7,11 @@
 import SwiftUI
 
 class EventListViewModel: ObservableObject {
-  private let repository: EventRepository
+  private let repository: EventInfoRepository
   @Published var searchMessage: String = ""
   @Published var eventList: [Event] = []
 
-  init(repository: EventRepository = MockEventRepositoryImpl()) {
+  init(repository: EventInfoRepository = MockEventInfoRepositoryImpl()) {
     self.repository = repository
     self.eventList = repository.fetchEvents()
   }

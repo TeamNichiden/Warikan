@@ -32,7 +32,7 @@ struct GrouppyApp: App {
               EventListView()
                 .environmentObject(router)
             case .event(let id):
-                EventView(eventId: id)
+                EventInfoView(eventId: id)
                 .environmentObject(router)
             }
           }

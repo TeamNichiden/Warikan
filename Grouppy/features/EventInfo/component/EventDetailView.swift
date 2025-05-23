@@ -1,5 +1,5 @@
 //
-//  GroupInfoView.swift
+//  EventDetailView.swift
 //  Grouppy
 //
 //  Created by cmStudent on 2025/05/13.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension View {
-    func EventInfoView(date: String, place: String, memo: String) -> some View {
+    func EventDetailView(date: String, place: String, memo: String) -> some View {
         VStack(alignment: .leading) {
             HStack {
                 Text("日時：")
