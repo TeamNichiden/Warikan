@@ -22,9 +22,9 @@ class AddNewEventViewModel: ObservableObject {
   )
   @Published var isShowEvent: Bool = false
   @Published var lastEventId: String?
-  private let repository: EventRepository
+  private let repository: EventInfoRepository
 
-  init(repository: EventRepository = MockEventRepositoryImpl()) {
+  init(repository: EventInfoRepository = MockEventInfoRepositoryImpl()) {
     self.repository = repository
   }
 

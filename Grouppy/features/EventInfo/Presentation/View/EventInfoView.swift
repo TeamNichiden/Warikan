@@ -9,12 +9,12 @@ import SwiftUI
 
 struct EventInfoView: View {
   let eventId: String
-  @StateObject private var vm: EventViewModel
+  @StateObject private var vm: EventInfoViewModel
   @EnvironmentObject var route: NavigationRouter
 
   init(eventId: String) {
     self.eventId = eventId
-    _vm = StateObject(wrappedValue: EventViewModel(eventId: eventId))
+    _vm = StateObject(wrappedValue: EventInfoViewModel(eventId: eventId))
   }
 
   var body: some View {
@@ -53,7 +53,7 @@ struct EventInfoView: View {
   }
 
   private func eventInfoSection(event: Event) -> some View {
-    EventInfoView(
+    EventDetailView(
       date: event.date.formatted(),
       place: event.place,
       memo: event.description
