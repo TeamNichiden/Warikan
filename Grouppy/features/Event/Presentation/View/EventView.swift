@@ -17,25 +17,25 @@ struct EventView: View {
     _vm = StateObject(wrappedValue: EventViewModel(eventId: eventId))
   }
 
-    var body: some View {
-        VStack(spacing: 0) {
-            if let event = vm.event {
-                // イベントタイトル
-                Text(event.title)
-                    .font(.title)
-                    .fontWeight(.bold)
-                ScrollView {
-                    memberListSection(event: event)
-                    eventInfoSection(event: event)
-                    paymentStatusSection(event: event)
-                    actionButtonsSection
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
-                ProgressView()
-            }
+  var body: some View {
+    VStack(spacing: 0) {
+      if let event = vm.event {
+        // イベントタイトル
+        Text(event.title)
+          .font(.title)
+          .fontWeight(.bold)
+        ScrollView {
+          memberListSection(event: event)
+          eventInfoSection(event: event)
+          paymentStatusSection(event: event)
+          actionButtonsSection
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+      } else {
+        ProgressView()
+      }
     }
+  }
 
   // MARK: - Subviews
   private func memberListSection(event: Event) -> some View {
