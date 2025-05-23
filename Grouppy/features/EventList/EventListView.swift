@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct GroupListView: View {
-  @StateObject var vm = GroupListViewModel()
+struct EventListView: View {
+  @StateObject var vm = EventListViewModel()
   @EnvironmentObject var route: NavigationRouter
 
   var body: some View {
@@ -19,8 +19,8 @@ struct GroupListView: View {
       // 検索バー
       searchBar
 
-      // グループリスト
-      groupListView
+      // イベントリスト
+      eventListView
     }
     .padding(.horizontal)
     .onTapGesture {
@@ -34,7 +34,7 @@ struct GroupListView: View {
     HStack {
       Spacer()
       Button(action: {
-        route.navigate(to: .addGroup)
+        route.navigate(to: .addEvent)
       }) {
         addButton()
       }
@@ -49,28 +49,28 @@ struct GroupListView: View {
       .cornerRadius(16)
   }
 
-  private var groupListView: some View {
+  private var eventListView: some View {
     ScrollView(showsIndicators: false) {
       VStack(spacing: 16) {
-        if !vm.filteredGroupList.isEmpty {
-          ForEach(vm.filteredGroupList) { group in
-            groupRow(for: group)
+        if !vm.filteredEventList.isEmpty {
+          ForEach(vm.filteredEventList) { event in
+            eventRow(for: event)
           }
         } else {
-          Text("現在はグループがありません")
+          Text("現在はイベントがありません")
             .foregroundColor(.gray)
         }
       }
     }
   }
 
-  private func groupRow(for group: Group) -> some View {
+  private func eventRow(for event: Event) -> some View {
     Button(action: {
-      route.navigate(to: .group(id: group.id))
+      route.navigate(to: .event(id: event.id))
     }) {
       HStack {
-        Image(systemName: "person.3.fill")  // 仮のグループアイコン
-        Text(group.name)
+        Image(systemName: "calendar")
+        Text(event.title)
       }
       .padding()
       .frame(maxWidth: .infinity, minHeight: 50)
@@ -85,5 +85,5 @@ struct GroupListView: View {
 }
 
 #Preview {
-  GroupListView()
+  EventListView()
 }

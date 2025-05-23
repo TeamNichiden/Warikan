@@ -10,7 +10,7 @@ import SwiftUI
 // TODO: このコンポーネントはイベント追加画面で利用
 
 struct DatePickerSheetView: View {
-    @ObservedObject var vm: AddNewGroupViewModel
+    @ObservedObject var vm: AddNewEventViewModel
     
     var body: some View {
         VStack {
@@ -38,5 +38,5 @@ struct DatePickerSheetView: View {
 }
 
 #Preview {
-    DatePickerSheetView(vm: AddNewGroupViewModel())
+    DatePickerSheetView(vm: AddNewEventViewModel())
 }
