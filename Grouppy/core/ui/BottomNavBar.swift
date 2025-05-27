@@ -5,18 +5,18 @@ struct BottomNavBar: View {
     var selected: Route
     @Namespace private var animation
 
+    let NAV_BAR_HEIGHT: CGFloat = 80
+
     var body: some View {
         VStack(spacing: 0) {
-            Rectangle()
-                .fill(Color(red: 224/255, green: 224/255, blue: 224/255))
-                .frame(height: 1)
+            Divider()
             HStack(spacing: 0) {
                 tabItem(route: .home, icon: "house.fill", label: "ホーム")
                 tabItem(route: .eventList, icon: "person.3.fill", label: "イベント")
                 tabItem(route: .history, icon: "clock.arrow.circlepath", label: "履歴")
                 tabItem(route: .setting, icon: "gearshape.fill", label: "設定")
             }
-            .frame(height: 80)
+            .frame(height: NAV_BAR_HEIGHT)
             .background(
                 LinearGradient(
                     gradient: Gradient(colors: [Color.white, Color(.systemGray6)]),

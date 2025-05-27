@@ -31,7 +31,6 @@ struct GrouppyApp: App {
                 AddNewEventView()
               case .eventList:
                 EventListView()
-                  .toolbar(.hidden, for: .navigationBar)
               case .event(let id):
                 EventInfoView(eventId: id)
               case .setting:
