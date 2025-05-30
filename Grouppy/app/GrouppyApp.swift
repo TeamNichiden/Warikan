@@ -13,7 +13,7 @@ struct GrouppyApp: App {
   @StateObject private var router = NavigationRouter()
 
   // BottomBarを表示したいRouteを列挙
-  private let tabRoutes: [Route] = [.home, .eventList, .history, .setting]
+    private let tabRoutes: [Route] = [.home, .eventList, .history, .setting]
 
   var body: some Scene {
     WindowGroup {
@@ -34,7 +34,7 @@ struct GrouppyApp: App {
               case .event(let id):
                 EventInfoView(eventId: id)
               case .setting:
-                EmptyView()
+                  SettingView()
                   .toolbar(.hidden, for: .navigationBar)
               case .history:
                 EmptyView()
@@ -42,7 +42,7 @@ struct GrouppyApp: App {
               }
             }
         }
-        if isShouldShowBottomBar {
+          if isShouldShowBottomBar && auth.isLoggedIn {
           BottomNavBar(selected: router.path.last ?? .home)
             .transition(.move(edge: .bottom))
         }

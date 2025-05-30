@@ -57,6 +57,15 @@ struct LoginScreen: View {
         }
       }
       .disabled(vm.isLoading || vm.email.isEmpty || vm.password.isEmpty)
+        
+        Button(action: {
+            vm.login { succese in
+                auth.isLoggedIn = true
+                route.popToRoot()
+            }
+        }) {
+            Text("マネジャーモード")
+        }
       Spacer()
     }
     .padding(.horizontal, 24)
