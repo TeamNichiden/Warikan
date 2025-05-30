@@ -35,9 +35,9 @@ struct LoginScreen: View {
           .font(.caption)
       }
       Button(action: {
-        vm.login { success in
+        Task {
+          let success = await auth.signUp(email: vm.email, password: vm.password)
           if success {
-            auth.isLoggedIn = true
             route.popToRoot()
           }
         }
@@ -59,7 +59,10 @@ struct LoginScreen: View {
       .disabled(vm.isLoading || vm.email.isEmpty || vm.password.isEmpty)
         
         Button(action: {
-            vm.managerMode()
+            vm.login { succese in
+                auth.isLoggedIn = true
+                route.popToRoot()
+            }
         }) {
             Text("マネジャーモード")
         }

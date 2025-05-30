@@ -16,6 +16,7 @@ class LoginViewModel: ObservableObject {
     
     func login(completion: @escaping (Bool) -> Void) {
         isLoading = true
+        managerMode()
         // TODO: 実際の認証処理を実装
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.isLoading = false

@@ -13,12 +13,19 @@ struct SettingView: View {
     
     var body: some View {
         Button(action: {
-            auth.isLoggedIn = false
-            UserDefaults.standard.synchronize()
+          Task {
+            await auth.signOut()
             route.popToRoot()
+          }
         }) {
-            Text("log out")
+          if auth.isSigningOut {
+            ProgressView()
+              .progressViewStyle(CircularProgressViewStyle())
+          } else {
+            Text("ログアウト")
+          }
         }
+        .disabled(auth.isSigningOut)
     }
 }
 
