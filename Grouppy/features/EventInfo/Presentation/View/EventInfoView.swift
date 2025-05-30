@@ -7,29 +7,38 @@
 
 import SwiftUI
 
-struct GroupView: View {
-  @StateObject var vm: GroupViewModel
+struct EventInfoView: View {
+  let eventId: String
+  @StateObject private var vm: EventInfoViewModel
   @EnvironmentObject var route: NavigationRouter
-  init(groupId: String) {
-    _vm = StateObject(wrappedValue: GroupViewModel(groupId: groupId))
+
+  init(eventId: String) {
+    self.eventId = eventId
+    _vm = StateObject(wrappedValue: EventInfoViewModel(eventId: eventId))
   }
 
   var body: some View {
-    // MARK: イベントタイトル
-    Text(vm.group.name)
-      .font(.title)
-      .fontWeight(.bold)
-    ScrollView {
-      memberListSection
-      eventInfoSection
-      paymentStatusSection
-      actionButtonsSection
+    VStack(spacing: 0) {
+      if let event = vm.event {
+        // イベントタイトル
+        Text(event.title)
+          .font(.title)
+          .fontWeight(.bold)
+        ScrollView {
+          memberListSection(event: event)
+          eventInfoSection(event: event)
+          paymentStatusSection(event: event)
+          actionButtonsSection
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+      } else {
+        ProgressView()
+      }
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
   }
 
   // MARK: - Subviews
-  private var memberListSection: some View {
+  private func memberListSection(event: Event) -> some View {
     VStack {
       Text("メンバー")
         .fontWeight(.bold)
@@ -43,23 +52,19 @@ struct GroupView: View {
     .groupComponentStyle()
   }
 
-  private var eventInfoSection: some View {
-    // 先頭イベントを仮で表示（なければ空文字）
-    let event = vm.group.events?.first
-    return EventInfoView(
-      date: event?.date.formatted() ?? "",
-      place: event?.place ?? "",
-      memo: event?.description ?? ""
+  private func eventInfoSection(event: Event) -> some View {
+    EventDetailView(
+      date: event.date.formatted(),
+      place: event.place,
+      memo: event.description
     )
     .frame(maxWidth: .infinity, alignment: .leading)
     .eventInfoStyle()
     .padding(.horizontal)
   }
 
-  private var paymentStatusSection: some View {
-    // 先頭イベントの合計金額を仮で表示
-    let event = vm.group.events?.first
-    let total = event?.transactions?.reduce(0) { $0 + $1.amount } ?? 0
+  private func paymentStatusSection(event: Event) -> some View {
+    let total = event.transactions.reduce(0) { $0 + $1.amount }
     return VStack {
       Text("支払い状況")
         .fontWeight(.bold)
@@ -72,9 +77,8 @@ struct GroupView: View {
         .frame(height: 1)
         .foregroundStyle(Color(.systemGray4))
         .padding(.vertical)
-      // TODO: 支払い履歴をevent.transactionsから生成
-      if let transactions = event?.transactions {
-        ForEach(transactions) { txn in
+      if !event.transactions.isEmpty {
+        ForEach(event.transactions) { txn in
           MiniHistoryRow(message: "\(txn.payerId)が支払いしました", price: "¥\(txn.amount)")
         }
       } else {
@@ -111,5 +115,5 @@ struct GroupView: View {
 }
 
 #Preview {
-  GroupView(groupId: MockData.groups[0].id)
+  EventInfoView(eventId: "sampleEventId")
 }

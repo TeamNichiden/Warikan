@@ -45,33 +45,16 @@ struct MockData {
   static var events: [Event] = [
     Event(
       id: "event-001",
-      groupId: "group-001",
       title: "4月の歓迎会",
       description: "新入社員の歓迎会です",
       date: Date(timeIntervalSince1970: 1_713_522_000),
       place: "渋谷 居酒屋",
       ownerId: "user-001",
       participantIds: ["user-001", "user-002", "user-003"],
-      transactionIds: ["txn-001", "txn-002"],
+      transactions: transactions,
       createdAt: Date(timeIntervalSince1970: 1_713_518_400),
       updatedAt: Date(timeIntervalSince1970: 1_713_536_400),
-      participants: users,
-      transactions: transactions
-    )
-  ]
-
-  static var groups: [Group] = [
-    Group(
-      id: "group-001",
-      name: "飲み会グループ",
-      description: "4月の飲み会グループ",
-      ownerId: "user-001",
-      memberIds: ["user-001", "user-002", "user-003"],
-      eventIds: ["event-001"],
-      createdAt: Date(timeIntervalSince1970: 1_713_510_000),
-      updatedAt: Date(timeIntervalSince1970: 1_713_536_400),
-      members: users,
-      events: events
+      participants: users
     )
   ]
 }

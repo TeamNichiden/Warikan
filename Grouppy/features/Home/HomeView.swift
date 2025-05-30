@@ -58,14 +58,14 @@ struct HomeView: View {
           .padding()
 
         GroupCard(
-          action: { route.navigate(to: .addGroup) },
+          action: { route.navigate(to: .addEvent) },
           btnImg: "plus.circle.fill",
           title: "グループ作成",
           message: "新しいグループを作成する"
         )
 
         GroupCard(
-          action: { route.navigate(to: .groupList) },
+          action: { route.navigate(to: .eventList) },
           btnImg: "list.dash",
           title: "グループ確認",
           message: "所属グループを確認する"
