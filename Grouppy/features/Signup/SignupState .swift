@@ -1,4 +1,5 @@
 struct SignupUIState {
+    var name: String = ""
     var email: String = ""
     var password: String = ""
     var passwordConfirm: String = ""
