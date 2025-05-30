@@ -11,6 +11,6 @@ struct Group: Identifiable, Codable, Equatable {
   var updatedAt: Date
 
   // アプリ内キャッシュ
-  var members: [User]? = nil
+    var members: [AppUser]? = nil
   var events: [Event]? = nil
 }

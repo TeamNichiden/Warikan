@@ -22,11 +22,7 @@ final class SupabaseService: SupabaseServiceProtocol {
     private let client: SupabaseClient
     
     init() {
-        self.client = SupabaseClient(
-            // TODO: URL,Keyの秘匿化
-            supabaseURL: URL(string: "https://your-url.supabase.co")!,
-            supabaseKey: "your-anon-key"
-        )
+        self.client = SupabaseClientProvider.shared
     }
     
     func fetch<T: Decodable>(

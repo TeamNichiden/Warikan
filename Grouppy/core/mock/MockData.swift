@@ -1,17 +1,17 @@
 import Foundation
 
 struct MockData {
-  static let users: [User] = [
-    User(
-      id: "user-001", name: "山田 太郎", email: "taro@example.com", userId: "taro",
+    static let users: [AppUser] = [
+        AppUser(
+      id: UUID(), name: "山田 太郎", email: "taro@example.com", userId: "taro",
       iconUrl: URL(string: "https://example.com/icon1.png")),
-    User(
-      id: "user-002", name: "佐藤 花子", email: "hanako@example.com", userId: "hanako",
+        AppUser(
+      id: UUID(), name: "佐藤 花子", email: "hanako@example.com", userId: "hanako",
       iconUrl: URL(string: "https://example.com/icon2.png")),
-    User(id: "user-003", name: "鈴木 次郎", email: "jiro@example.com", userId: "jiro", iconUrl: nil),
+        AppUser(id: UUID(), name: "鈴木 次郎", email: "jiro@example.com", userId: "jiro", iconUrl: nil),
   ]
 
-  static let authUser: User = users[0]
+    static let authUser: AppUser = users[0]
 
   static var transactions: [Transaction] = [
     Transaction(

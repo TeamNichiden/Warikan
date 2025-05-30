@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MiniProfile: View {
-  var user: User
+    var user: AppUser
   var body: some View {
     HStack {
       Circle() /*アイコンを表示*/
@@ -33,6 +33,6 @@ struct MiniProfile: View {
 
 #Preview {
   MiniProfile(
-    user: User(
-      id: "user-001", name: "山田 太郎", email: "taro@example.com", userId: "taro", iconUrl: nil))
+    user: AppUser(
+        id: UUID(), name: "山田 太郎", email: "taro@example.com", userId: "taro", iconUrl: nil))
 }

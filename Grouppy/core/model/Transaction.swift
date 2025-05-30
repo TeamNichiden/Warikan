@@ -12,6 +12,6 @@ struct Transaction: Identifiable, Codable, Equatable {
   var updatedAt: Date
 
   // アプリ内で使う場合のキャッシュ（API通信時は使わない）
-  var payer: User? = nil
-  var payees: [User]? = nil
+    var payer: AppUser? = nil
+    var payees: [AppUser]? = nil
 }

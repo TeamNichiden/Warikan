@@ -10,13 +10,14 @@ import SwiftUI
 struct HomeView: View {
   @StateObject var vm = HomeViewModel()
   @EnvironmentObject var route: NavigationRouter
+  @EnvironmentObject var auth: AuthManager
 
   var body: some View {
     VStack {
 
       //MARK: HEADER
       HStack {
-          MiniProfile(user: MockData.authUser)
+        MiniProfile(user: MockData.authUser)
       }
       .padding()
       .frame(maxWidth: .infinity)
@@ -31,6 +32,21 @@ struct HomeView: View {
             .padding()
         }
       }
+
+      Button(action: {
+        Task {
+          await auth.signOut()
+          route.popToRoot()
+        }
+      }) {
+        if auth.isSigningOut {
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle())
+        } else {
+          Text("ログアウト")
+        }
+      }
+      .disabled(auth.isSigningOut)
 
       Spacer()
 
