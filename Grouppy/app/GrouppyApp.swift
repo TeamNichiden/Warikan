@@ -34,7 +34,7 @@ struct GrouppyApp: App {
               case .event(let id):
                 EventInfoView(eventId: id)
               case .setting:
-                SettingView()
+                  SettingView()
                   .toolbar(.hidden, for: .navigationBar)
               case .history:
                 EmptyView()
