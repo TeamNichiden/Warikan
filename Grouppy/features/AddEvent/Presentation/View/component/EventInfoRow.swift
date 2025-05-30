@@ -18,6 +18,7 @@ struct EventInfoRow: View {
         if let btnIcon, let action {
           Button(action: action) {
             Image(systemName: btnIcon)
+                  .font(.title2)
           }
         }
       }
