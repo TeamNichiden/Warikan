@@ -19,8 +19,10 @@ struct AddNewEventView: View {
           .font(.title)
           .fontWeight(.bold)
         Spacer()
-        GroupInfoRow(title: "イベント名", message: "イベント名を入力(必須)", inputMessage: $vm.event.title)
-        GroupInfoRow(title: "メモ", message: "詳細情報を入力(任意)", inputMessage: $vm.event.description)
+        EventInfoRow(title: "イベント名", message: "イベント名を入力(必須)", inputMessage: $vm.event.title)
+        EventInfoRow(title: "メモ", message: "詳細情報を入力(任意)", inputMessage: $vm.event.description)
+          EventInfoRow(title: "日時", message: "\(vm.event.date)", inputMessage: $vm.event.date, btnIcon: "calendar",action: {})
+          EventInfoRow(title: "場所", message: "", inputMessage: $vm.event.place, btnIcon: "mappin.and.ellipse",action: {})
 
         // メンバーリスト
         VStack(alignment: .leading) {
@@ -71,4 +73,8 @@ struct AddNewEventView: View {
 
 #Preview {
   AddNewEventView()
+}
+
+#Preview {
+  EventInfoRow(title: "イベント名", message: "イベント名を入力(必須)", inputMessage: .constant(""))
 }
