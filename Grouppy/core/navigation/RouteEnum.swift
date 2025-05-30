@@ -6,4 +6,6 @@ enum Route: Hashable {
   case addEvent
   case eventList
   case event(id: String)
+  case history
+  case setting
 }
