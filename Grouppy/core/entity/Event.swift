@@ -14,5 +14,4 @@ struct Event: Identifiable, Codable, Equatable {
 
   // アプリ内で使う場合のキャッシュ（API通信時は使わない）
     var participants: [AppUser]? = nil
-  var transactions: [Transaction]? = nil
 }
