@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct SettingView: View {
+    @EnvironmentObject var auth: AuthManager
+    @EnvironmentObject var route: NavigationRouter
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button(action: {
+            auth.isLoggedIn = false
+            UserDefaults.standard.synchronize()
+            route.popToRoot()
+        }) {
+            Text("log out")
+        }
     }
 }
 
