@@ -85,17 +85,21 @@ struct LoginScreen: View {
             Button(action: {
                 //Apple Login
             }) {
-                Text("Appleでログイン")
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.black)
-                    .cornerRadius(8)
+                HStack {
+                    Image(systemName: "apple.logo")
+                    Text("Appleでログイン")
+                }
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.black)
+                .cornerRadius(8)
             }
             
             Button(action: {
                 // Google Login
             }) {
+                // TODO: GOOGLE　LOGOを追加予定
                 Text("Googleでログイン")
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity)
