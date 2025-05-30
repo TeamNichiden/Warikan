@@ -54,7 +54,7 @@ struct EventInfoView: View {
 
   private func eventInfoSection(event: Event) -> some View {
     EventDetailView(
-      date: event.date.formatted(),
+      date: event.date,
       place: event.place,
       memo: event.description
     )
