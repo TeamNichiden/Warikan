@@ -7,18 +7,18 @@
 import SwiftUI
 
 class UserProfileViewModel: ObservableObject {
-  @Published var user: User
+    @Published var user: AppUser
   @Published var showIconChangeDialog: Bool = false
   @Published var showCameraSheet: Bool = false
   @Published var showLibrarySheet: Bool = false
   private let imageUploadService: ImageUploadService
 
-  init(user: User? = nil, imageUploadService: ImageUploadService = LocalImageUploadService()) {
+    init(user: AppUser? = nil, imageUploadService: ImageUploadService = LocalImageUploadService()) {
     self.imageUploadService = imageUploadService
     if let user = user {
       self.user = user
     } else {
-      self.user = User(id: "", name: "", email: "", userId: "", iconUrl: nil)
+        self.user = AppUser(id: UUID(), name: "", email: "", userId: "", iconUrl: nil)
     }
   }
 

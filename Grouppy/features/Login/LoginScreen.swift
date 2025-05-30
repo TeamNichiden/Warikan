@@ -35,9 +35,9 @@ struct LoginScreen: View {
           .font(.caption)
       }
       Button(action: {
-        vm.login { success in
+        Task {
+          let success = await auth.signUp(email: vm.email, password: vm.password)
           if success {
-            auth.isLoggedIn = true
             route.popToRoot()
           }
         }
