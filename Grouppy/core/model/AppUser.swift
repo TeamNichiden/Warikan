@@ -1,7 +1,7 @@
 import Foundation
 
-struct User: Identifiable, Codable, Equatable {
-  let id: String  // ユーザーUUID
+struct AppUser: Identifiable, Codable, Equatable {
+  let id: UUID  // ユーザーUUID
   var name: String
   var email: String
   var userId: String

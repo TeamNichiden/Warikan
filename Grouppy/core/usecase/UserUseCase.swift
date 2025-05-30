@@ -1,8 +1,8 @@
 import Foundation
 
 protocol UserUseCase {
-  func fetchUser(id: String) async throws -> User?
-  func fetchUsers(ids: [String]) async throws -> [User]
+  func fetchUser(id: String) async throws -> AppUser?
+  func fetchUsers(ids: [String]) async throws -> [AppUser]
 }
 
 class UserUseCaseImpl: UserUseCase {
@@ -12,11 +12,11 @@ class UserUseCaseImpl: UserUseCase {
     self.repository = repository
   }
 
-  func fetchUser(id: String) async throws -> User? {
+  func fetchUser(id: String) async throws -> AppUser? {
     try await repository.fetchUser(id: id)
   }
 
-  func fetchUsers(ids: [String]) async throws -> [User] {
+  func fetchUsers(ids: [String]) async throws -> [AppUser] {
     try await repository.fetchUsers(ids: ids)
   }
 }
