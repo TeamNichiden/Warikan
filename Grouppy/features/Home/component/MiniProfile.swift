@@ -12,12 +12,12 @@ struct MiniProfile: View {
   var body: some View {
     HStack {
       Circle() /*アイコンを表示*/
-        .fill(Color(.systemGray5))
+        .fill(.cyan)
         .frame(width: 80)
-        .padding(.horizontal, 30)
+        .padding(.trailing, 8)
 
       HStack {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading) {
           Text(user.name)
             .fontWeight(.bold)
             .font(.title2)
@@ -28,6 +28,7 @@ struct MiniProfile: View {
       }
       Spacer()
     }
+    .padding(.horizontal, 8)
   }
 }
 
