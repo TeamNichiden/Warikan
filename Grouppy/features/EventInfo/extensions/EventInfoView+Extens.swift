@@ -15,7 +15,7 @@ extension View {
         RoundedRectangle(cornerRadius: 16)
           .stroke(Color(.systemGray4), lineWidth: 1)
       )
-      .padding()
+      .padding(.horizontal)
   }
 }
 
@@ -25,5 +25,6 @@ extension View {
       .padding()
       .background(Color(.systemGray6))
       .cornerRadius(8)
+      .padding(.bottom)
   }
 }
