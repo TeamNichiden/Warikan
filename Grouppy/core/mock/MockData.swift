@@ -59,9 +59,9 @@ struct MockData {
     Event(
       id: "event-001",
       title: "4月の歓迎会",
-      description: "新入社員の歓迎会です",
+      description: "新年会です。飲み放題プランで予約済み。参加費は一人3000円程度を予定しています。",
       date: Date(timeIntervalSince1970: 1_713_522_000).dateToString(),
-      place: "渋谷 居酒屋",
+      place: "渋谷 居酒屋 鳥貴族",
       ownerId: "user-001",
       participantIds: ["user-001", "user-002", "user-003"],
       transactions: transactions,
