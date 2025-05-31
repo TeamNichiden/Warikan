@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct GroupInfoRow: View {
+struct EventInfoRow: View {
   let title: String
   let message: String
   @Binding var inputMessage: String
@@ -18,6 +18,7 @@ struct GroupInfoRow: View {
         if let btnIcon, let action {
           Button(action: action) {
             Image(systemName: btnIcon)
+                  .font(.title2)
           }
         }
       }
@@ -29,5 +30,5 @@ struct GroupInfoRow: View {
 }
 
 #Preview {
-  GroupInfoRow(title: "グループ名", message: "グループ名を入力", inputMessage: .constant(""))
+  EventInfoRow(title: "イベント名", message: "イベント名を入力(必須)", inputMessage: .constant(""))
 }

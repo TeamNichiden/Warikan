@@ -4,7 +4,7 @@ struct Event: Identifiable, Codable, Equatable {
   let id: String  // イベントのUUID（主キー）
   var title: String
   var description: String
-  var date: Date
+  var date: String
   var place: String
   var ownerId: String  // イベント作成者のユーザーID
   var participantIds: [String]  // 参加者のユーザーID配列

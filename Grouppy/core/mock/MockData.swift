@@ -47,7 +47,7 @@ struct MockData {
       id: "event-001",
       title: "4月の歓迎会",
       description: "新入社員の歓迎会です",
-      date: Date(timeIntervalSince1970: 1_713_522_000),
+      date: Date(timeIntervalSince1970: 1_713_522_000).dateToString(),
       place: "渋谷 居酒屋",
       ownerId: "user-001",
       participantIds: ["user-001", "user-002", "user-003"],
