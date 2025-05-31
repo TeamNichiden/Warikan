@@ -13,7 +13,7 @@ struct GrouppyApp: App {
   @StateObject private var router = NavigationRouter()
 
   // BottomBarを表示したいRouteを列挙
-    private let tabRoutes: [Route] = [.home, .eventList, .history, .setting]
+    private let tabRoutes: [Route] = [.home, .eventList, .history, .setting, .signUp]
 
   var body: some Scene {
     WindowGroup {
@@ -39,6 +39,8 @@ struct GrouppyApp: App {
               case .history:
                 EmptyView()
                   .toolbar(.hidden, for: .navigationBar)
+              case .signUp:
+                  SignupScreen()
               }
             }
         }
