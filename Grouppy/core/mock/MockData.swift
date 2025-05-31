@@ -40,6 +40,19 @@ struct MockData {
       payer: users[1],
       payees: [users[0], users[2]]
     ),
+    Transaction(
+      id: "txn-003",
+      eventId: "event-001",
+      payerId: "user-003",
+      payeeIds: ["user-001", "user-002"],
+      amount: 5000,
+      totalAmount: 15000,
+      memo: "二次会分",
+      createdAt: Date(timeIntervalSince1970: 1_713_532_800),
+      updatedAt: Date(timeIntervalSince1970: 1_713_532_800),
+      payer: users[2],
+      payees: [users[0], users[1]]
+    )
   ]
 
   static var events: [Event] = [
