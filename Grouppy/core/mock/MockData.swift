@@ -40,15 +40,28 @@ struct MockData {
       payer: users[1],
       payees: [users[0], users[2]]
     ),
+    Transaction(
+      id: "txn-003",
+      eventId: "event-001",
+      payerId: "user-003",
+      payeeIds: ["user-001", "user-002"],
+      amount: 5000,
+      totalAmount: 15000,
+      memo: "二次会分",
+      createdAt: Date(timeIntervalSince1970: 1_713_532_800),
+      updatedAt: Date(timeIntervalSince1970: 1_713_532_800),
+      payer: users[2],
+      payees: [users[0], users[1]]
+    )
   ]
 
   static var events: [Event] = [
     Event(
       id: "event-001",
       title: "4月の歓迎会",
-      description: "新入社員の歓迎会です",
+      description: "新年会です。飲み放題プランで予約済み。参加費は一人3000円程度を予定しています。",
       date: Date(timeIntervalSince1970: 1_713_522_000).dateToString(),
-      place: "渋谷 居酒屋",
+      place: "渋谷 居酒屋 鳥貴族",
       ownerId: "user-001",
       participantIds: ["user-001", "user-002", "user-003"],
       transactions: transactions,
