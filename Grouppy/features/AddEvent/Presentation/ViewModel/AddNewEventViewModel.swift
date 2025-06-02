@@ -30,6 +30,12 @@ class AddNewEventViewModel: ObservableObject {
     
     func isCheckingInfo() {
         if !event.title.isEmpty {
+            if event.place.isEmpty {
+                self.event.place = "未定"
+            }
+            if event.description.isEmpty {
+                self.event.description = "特になし"
+            }
             addEvent()
             isShowEvent = true
         }
