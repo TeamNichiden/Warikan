@@ -40,7 +40,9 @@ struct HomeView: View {
         }
         .padding()
       }
-
+        ProximityEventView()
+        
+        Divider()
       Spacer()
 
       //MARK: FOOTER
