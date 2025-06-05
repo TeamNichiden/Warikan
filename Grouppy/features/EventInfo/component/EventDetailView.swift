@@ -10,7 +10,6 @@ import SwiftUI
 extension View {
     func EventDetailView(date: String, place: String, memo: String, editing: @escaping (() -> Void)) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            // 日时信息
             EventDetailRow(
                 icon: "calendar",
                 iconColor: .blue,
@@ -18,7 +17,6 @@ extension View {
                 content: date
             )
             
-            // 场所信息
             EventDetailRow(
                 icon: "mappin.and.ellipse",
                 iconColor: .red,
@@ -26,7 +24,6 @@ extension View {
                 content: place
             )
             
-            // 备忘录信息
             EventDetailRow(
                 icon: "note.text",
                 iconColor: .orange,
@@ -49,7 +46,6 @@ extension View {
     }
 }
 
-// 新增的子组件
 struct EventDetailRow: View {
     let icon: String
     let iconColor: Color
