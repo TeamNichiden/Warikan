@@ -22,6 +22,8 @@ class AddNewEventViewModel: ObservableObject {
     )
     @Published var isShowEvent: Bool = false
     @Published var lastEventId: String?
+    @Published var selectedDate: Date = Date()
+    @Published var showDatePicker: Bool = false
     private let repository: EventInfoRepository
     
     init(repository: EventInfoRepository = MockEventInfoRepositoryImpl()) {
@@ -58,4 +60,9 @@ class AddNewEventViewModel: ObservableObject {
             updatedAt: Date()
         )
     }
+    
+    func updateDate() {
+        event.date = selectedDate.dateToString()
+    }
+    
 }

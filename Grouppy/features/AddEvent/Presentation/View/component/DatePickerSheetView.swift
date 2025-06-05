@@ -14,24 +14,12 @@ struct DatePickerSheetView: View {
     
     var body: some View {
         VStack {
-//            DatePicker(
-//                "日付を選択",
-//                selection:  $vm.selectedDate,
-//                displayedComponents: [.date, .hourAndMinute]
-//            )
-//            .datePickerStyle(.graphical)
-//            .padding(.vertical)
-            
-            Button {
-//                vm.updateDate()
-            } label: {
-                Text("日付確定")
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .foregroundColor(.white)
-                    .background(Color.blue)
-                    .cornerRadius(8)
-            }
+            DatePicker(
+                "日付を選択",
+                selection:  $vm.selectedDate,
+                displayedComponents: [.date, .hourAndMinute]
+            )
+            .padding(.vertical)
         }
         .padding()
     }

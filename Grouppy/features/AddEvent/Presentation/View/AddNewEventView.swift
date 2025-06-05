@@ -21,7 +21,32 @@ struct AddNewEventView: View {
                 Spacer()
                 EventInfoRow(title: "イベント名", message: "イベント名を入力(必須)", inputMessage: $vm.event.title)
                 EventInfoRow(title: "メモ", message: "詳細情報を入力(任意)", inputMessage: $vm.event.description)
-                EventInfoRow(title: "日時", message: "\(vm.event.date)", inputMessage: $vm.event.date, btnIcon: "calendar",action: {})
+                EventInfoRow(title: "日時",
+                             message: "\(vm.event.date)",
+                             inputMessage: $vm.event.date,
+                             btnIcon: "chevron.forward",
+                             showDate: vm.showDatePicker,
+                             action: {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        vm.showDatePicker.toggle()
+                    }
+                })
+                if vm.showDatePicker {
+                    DatePickerSheetView(vm: vm)
+                        .animation(.spring(), value: vm.showDatePicker)
+                    Button {
+                        vm.updateDate()
+                        vm.showDatePicker = false
+                    } label: {
+                        Text("日付確定")
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .foregroundColor(.white)
+                            .background(Color.blue)
+                            .cornerRadius(8)
+                    }
+                } else {}
+                
                 EventInfoRow(title: "場所", message: "", inputMessage: $vm.event.place, btnIcon: "mappin.and.ellipse",action: {})
                 
                 // メンバーリスト
