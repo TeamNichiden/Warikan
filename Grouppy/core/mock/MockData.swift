@@ -58,11 +58,37 @@ struct MockData {
   static var events: [Event] = [
     Event(
       id: "event-001",
-      title: "4月の歓迎会",
+      title: "夏祭りイベント",
       description: "新年会です。飲み放題プランで予約済み。参加費は一人3000円程度を予定しています。",
       date: Date(timeIntervalSince1970: 1_713_522_000).dateToString(),
       place: "渋谷 居酒屋 鳥貴族",
       ownerId: "user-001",
+      participantIds: ["user-001", "user-002", "user-003"],
+      transactions: transactions,
+      createdAt: Date(timeIntervalSince1970: 1_713_518_400),
+      updatedAt: Date(timeIntervalSince1970: 1_713_536_400),
+      participants: users
+    ),
+    Event(
+      id: "event-002",
+      title: "週末ハイキング",
+      description: "新年会です。飲み放題プランで予約済み。参加費は一人3000円程度を予定しています。",
+      date: Date(timeIntervalSince1970: 1_713_522_000).dateToString(),
+      place: "渋谷 居酒屋 鳥貴族",
+      ownerId: "user-002",
+      participantIds: ["user-001", "user-002", "user-003"],
+      transactions: transactions,
+      createdAt: Date(timeIntervalSince1970: 1_713_518_400),
+      updatedAt: Date(timeIntervalSince1970: 1_713_536_400),
+      participants: users
+    ),
+    Event(
+      id: "event-003",
+      title: "テクノロジーカンファレンス",
+      description: "新年会です。飲み放題プランで予約済み。参加費は一人3000円程度を予定しています。",
+      date: Date(timeIntervalSince1970: 1_713_522_000).dateToString(),
+      place: "渋谷 居酒屋 鳥貴族",
+      ownerId: "user-003",
       participantIds: ["user-001", "user-002", "user-003"],
       transactions: transactions,
       createdAt: Date(timeIntervalSince1970: 1_713_518_400),
