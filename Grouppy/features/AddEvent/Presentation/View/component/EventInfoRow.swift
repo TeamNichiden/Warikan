@@ -6,6 +6,7 @@ struct EventInfoRow: View {
     @Binding var inputMessage: String
     var isInputText: Bool = false
     var btnIcon: String? = nil
+    var showDate: Bool = false
     var action: (() -> Void)? = nil
     
     var body: some View {
@@ -19,6 +20,9 @@ struct EventInfoRow: View {
                     Button(action: action) {
                         Image(systemName: btnIcon)
                             .font(.title2)
+                            .foregroundColor(.gray)
+                            .rotationEffect(.degrees(showDate ? 90 : 0))
+                            .animation(.easeInOut(duration: 0.3), value: showDate)
                     }
                 }
             }
