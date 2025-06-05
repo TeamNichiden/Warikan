@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class AddNewEventViewModel: ObservableObject {
     @Published var event = Event(
@@ -65,4 +66,15 @@ class AddNewEventViewModel: ObservableObject {
         event.date = selectedDate.dateToString()
     }
     
+    func moveToAppleMap() {
+        // 使用Apple Maps的URL scheme直接打开应用
+        if let url = URL(string: "maps://") {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            } else {
+                // 如果Apple Maps应用不可用，显示错误信息或提供其他选择
+                print("Apple Maps应用不可用")
+            }
+        }
+    }
 }

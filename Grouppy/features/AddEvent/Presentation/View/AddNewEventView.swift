@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct AddNewEventView: View {
     @Environment(\.dismiss) private var dismiss
@@ -47,7 +48,9 @@ struct AddNewEventView: View {
                     }
                 } else {}
                 
-                EventInfoRow(title: "場所", message: "", inputMessage: $vm.event.place, btnIcon: "mappin.and.ellipse",action: {})
+                EventInfoRow(title: "場所", message: "", inputMessage: $vm.event.place, btnIcon: "mappin.and.ellipse",action: {
+                    vm.moveToAppleMap()
+                })
                 
                 // メンバーリスト
                 VStack(alignment: .leading) {
