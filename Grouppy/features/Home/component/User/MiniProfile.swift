@@ -9,23 +9,42 @@ import SwiftUI
 
 struct MiniProfile: View {
     var user: AppUser
+    
     var body: some View {
         HStack {
-            Circle() /*アイコンを表示*/
-                .fill(.cyan)
-                .frame(width: 80)
-                .padding(.trailing, 8)
-            
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(user.name)
-                        .fontWeight(.bold)
-                        .font(.title2)
-                    Text("@\(user.userId)")
-                        .foregroundColor(.gray)
-                        .font(.body)
+            // 用户头像
+            ZStack {
+                if let iconData = user.iconData, let uiImage = UIImage(data: iconData) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } else if let iconUrl = user.iconUrl {
+                    AsyncImage(url: iconUrl) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        Circle()
+                            .fill(.cyan)
+                    }
+                } else {
+                    Circle()
+                        .fill(.cyan)
                 }
             }
+            .frame(width: 80, height: 80)
+            .clipShape(Circle())
+            .padding(.trailing, 8)
+            
+            VStack(alignment: .leading) {
+                Text(user.name)
+                    .fontWeight(.bold)
+                    .font(.title2)
+                Text("@\(user.userId)")
+                    .foregroundColor(.gray)
+                    .font(.body)
+            }
+            
             Spacer()
         }
         .padding(.horizontal, 8)
@@ -35,5 +54,9 @@ struct MiniProfile: View {
 #Preview {
     MiniProfile(
         user: AppUser(
-            id: UUID(), name: "山田 太郎", email: "taro@example.com", userId: "taro", iconUrl: nil))
+            name: "山田 太郎", 
+            email: "taro@example.com", 
+            userId: "taro"
+        )
+    )
 }
