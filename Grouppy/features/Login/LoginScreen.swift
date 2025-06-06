@@ -14,32 +14,35 @@ struct LoginScreen: View {
     
     var body: some View {
         GeometryReader { geometry in
+            let screenSize = UIScreen.main.bounds.size // 使用固定的屏幕尺寸
+            let fixedGeometry = FixedGeometry(width: screenSize.width, height: screenSize.height)
+            
             ScrollView {
-                VStack(spacing: geometry.size.height * 0.03) { // 3% スクリンの高さを間隔として
+                VStack(spacing: fixedGeometry.height * 0.03) { // 3% スクリンの高さを間隔として
                     Text("ログイン")
-                        .font(.system(size: geometry.size.width * 0.08)) // 8% スクリンの幅を文字の大きさ
+                        .font(.system(size: fixedGeometry.width * 0.08)) // 8% スクリンの幅を文字の大きさ
                         .fontWeight(.bold)
-                        .padding(.top, geometry.size.height * 0.05) // 5% スクリンの高さを頂点との間隔に
+                        .padding(.top, fixedGeometry.height * 0.05) // 5% スクリンの高さを頂点との間隔に
                     
-                    VStack(alignment: .leading, spacing: geometry.size.height * 0.02) {
+                    VStack(alignment: .leading, spacing: fixedGeometry.height * 0.02) {
                         Text("メールアドレス")
-                            .font(.system(size: geometry.size.width * 0.04))
+                            .font(.system(size: fixedGeometry.width * 0.04))
                         TextField("メールアドレス", text: $vm.email)
                             .textContentType(.emailAddress)
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
-                            .textRowStyle(geometry: geometry)
+                            .textRowStyle(fixedGeometry: fixedGeometry)
                         
                         Text("パスワード")
-                            .font(.system(size: geometry.size.width * 0.04))
+                            .font(.system(size: fixedGeometry.width * 0.04))
                         SecureField("パスワード", text: $vm.password)
-                            .textRowStyle(geometry: geometry)
+                            .textRowStyle(fixedGeometry: fixedGeometry)
                     }
                     
                     if let error = vm.errorMessage {
                         Text(error)
                             .foregroundColor(.red)
-                            .font(.system(size: geometry.size.width * 0.035))
+                            .font(.system(size: fixedGeometry.width * 0.035))
                     }
                     
                     HStack {
@@ -48,16 +51,16 @@ struct LoginScreen: View {
                         } label: {
                             Text("パスワードを忘れた方")
                                 .underline()
-                                .font(.system(size: geometry.size.width * 0.035))
+                                .font(.system(size: fixedGeometry.width * 0.035))
                         }
                         Text("/")
-                            .font(.system(size: geometry.size.width * 0.035))
+                            .font(.system(size: fixedGeometry.width * 0.035))
                         Button {
                             
                         } label: {
                             Text("ログインでお困りの方")
                                 .underline()
-                                .font(.system(size: geometry.size.width * 0.035))
+                                .font(.system(size: fixedGeometry.width * 0.035))
                         }
                     }
                     .foregroundColor(.gray)
@@ -75,37 +78,37 @@ struct LoginScreen: View {
                             ProgressView()
                                 .progressViewStyle(CircularProgressViewStyle())
                                 .frame(maxWidth: .infinity)
-                                .frame(height: geometry.size.height * 0.06)
+                                .frame(height: fixedGeometry.height * 0.06)
                         } else {
                             Text("ログイン")
                                 .foregroundColor(.white)
-                                .font(.system(size: geometry.size.width * 0.045))
+                                .font(.system(size: fixedGeometry.width * 0.045))
                                 .frame(maxWidth: .infinity)
-                                .frame(height: geometry.size.height * 0.06)
+                                .frame(height: fixedGeometry.height * 0.06)
                                 .background(Color.blue)
-                                .cornerRadius(geometry.size.width * 0.02)
+                                .cornerRadius(fixedGeometry.width * 0.02)
                         }
                     }
                     .disabled(vm.isLoading || vm.email.isEmpty || vm.password.isEmpty)
                     
                     Text("または")
                         .foregroundColor(.gray)
-                        .font(.system(size: geometry.size.width * 0.035))
+                        .font(.system(size: fixedGeometry.width * 0.035))
                     
                     Button(action: {
                         //Apple Login
                     }) {
-                        HStack(spacing: geometry.size.width * 0.02) {
+                        HStack(spacing: fixedGeometry.width * 0.02) {
                             Image(systemName: "apple.logo")
-                                .font(.system(size: geometry.size.width * 0.04))
+                                .font(.system(size: fixedGeometry.width * 0.04))
                             Text("Appleでログイン")
-                                .font(.system(size: geometry.size.width * 0.04))
+                                .font(.system(size: fixedGeometry.width * 0.04))
                         }
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
-                        .frame(height: geometry.size.height * 0.06)
+                        .frame(height: fixedGeometry.height * 0.06)
                         .background(Color.black)
-                        .cornerRadius(geometry.size.width * 0.02)
+                        .cornerRadius(fixedGeometry.width * 0.02)
                     }
                     
                     Button(action: {
@@ -115,17 +118,17 @@ struct LoginScreen: View {
                             Image(.googleOld)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: geometry.size.width * 0.04)
+                                .frame(width: fixedGeometry.width * 0.04)
                             Text("Googleでログイン")
                         }
                         .foregroundColor(.black)
-                        .font(.system(size: geometry.size.width * 0.04))
+                        .font(.system(size: fixedGeometry.width * 0.04))
                         .frame(maxWidth: .infinity)
-                        .frame(height: geometry.size.height * 0.06)
+                        .frame(height: fixedGeometry.height * 0.06)
                         .background(Color.white)
-                        .cornerRadius(geometry.size.width * 0.02)
+                        .cornerRadius(fixedGeometry.width * 0.02)
                         .overlay(
-                            RoundedRectangle(cornerRadius: geometry.size.width * 0.02)
+                            RoundedRectangle(cornerRadius: fixedGeometry.width * 0.02)
                                 .stroke(Color(.systemGray4), lineWidth: 1)
                         )
                     }
@@ -135,7 +138,7 @@ struct LoginScreen: View {
                     }) {
                         Text("会員登録はこちら")
                             .foregroundColor(.gray)
-                            .font(.system(size: geometry.size.width * 0.04))
+                            .font(.system(size: fixedGeometry.width * 0.04))
                             .underline()
                     }
                     
@@ -147,25 +150,38 @@ struct LoginScreen: View {
                         }
                     }) {
                         Text("マネジャーモード")
-                            .font(.system(size: geometry.size.width * 0.04))
+                            .font(.system(size: fixedGeometry.width * 0.04))
                     }
                 }
-                .padding(.horizontal, geometry.size.width * 0.06) // 6% スクリンの幅を横の間隔として
+                .padding(.horizontal, fixedGeometry.width * 0.06) // 6% スクリンの幅を横の間隔として
                 .frame(maxWidth: .infinity)
-                .frame(minHeight: geometry.size.height)
+            }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
+            .onTapGesture {
+                hideKeyboard()
             }
         }
     }
 }
 
+// 固定几何尺寸结构体
+struct FixedGeometry {
+    let width: CGFloat
+    let height: CGFloat
+    
+    var size: CGSize {
+        CGSize(width: width, height: height)
+    }
+}
+
 extension View {
-    func textRowStyle(geometry: GeometryProxy) -> some View {
+    func textRowStyle(fixedGeometry: FixedGeometry) -> some View {
         self
-            .font(.system(size: geometry.size.width * 0.04))
-            .frame(height: geometry.size.height * 0.06)
-            .padding(.horizontal, geometry.size.width * 0.04)
+            .font(.system(size: fixedGeometry.width * 0.04))
+            .frame(height: fixedGeometry.height * 0.06)
+            .padding(.horizontal, fixedGeometry.width * 0.04)
             .background(Color(.systemGray6))
-            .cornerRadius(geometry.size.width * 0.02)
+            .cornerRadius(fixedGeometry.width * 0.02)
     }
 }
 
