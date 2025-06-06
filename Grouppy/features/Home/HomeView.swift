@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct HomeView: View {
-  @StateObject var vm = HomeViewModel()
-  @EnvironmentObject var route: NavigationRouter
-  @EnvironmentObject var auth: AuthManager
-
+    @EnvironmentObject var vm: HomeViewModel
+    @EnvironmentObject var route: NavigationRouter
+    @EnvironmentObject var auth: AuthManager
+    
   var body: some View {
     VStack {
       
       //MARK: HEADER
       HStack {
-        MiniProfile(user: MockData.authUser)
+        MiniProfile(user: vm.user)
       }
       .padding()
       .frame(maxWidth: .infinity)
@@ -46,36 +46,53 @@ struct HomeView: View {
       Spacer()
 
       //MARK: FOOTER
-      HStack(spacing: 16) {
-          GroupCard(
-              action: { route.navigate(to: .addEvent) },
-              title: "イベント作成",
-              textColor: .white,
-              backgroundColor: .blue
-          )
-          .overlay(
-              RoundedRectangle(cornerRadius: 10)
-                  .stroke(Color.blue, lineWidth: 2)
-          )
-          .frame(maxWidth: .infinity)
-          
-          GroupCard(
-              action: { route.navigate(to: .eventList) },
-              title: "イベント確認",
-              textColor: .blue,
-              backgroundColor: .white
-          )
-          .overlay(
-              RoundedRectangle(cornerRadius: 10)
-                  .stroke(Color.blue, lineWidth: 2)
-          )
-          .frame(maxWidth: .infinity)
+        HStack(spacing: 16) {
+            
+            button(action: { route.navigate(to: .addEvent) },
+                   title: "イベント作成",
+                   textColor: .white,
+                   backgroundColor: .blue)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.blue, lineWidth: 2)
+                )
+                .frame(maxWidth: .infinity)
+            
+            
+            button(action: { route.navigate(to: .eventList) },
+                   title: "イベント確認",
+                   textColor: .blue,
+                   backgroundColor: .white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.blue, lineWidth: 2)
+                )
+                .frame(maxWidth: .infinity)
       }
       .frame(maxWidth: .infinity)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding()
+    .environmentObject(vm) // 将HomeViewModel传递给子视图
   }
+}
+
+extension View {
+    func button(action: @escaping(() -> Void),
+                title: String,
+                textColor: Color,
+                backgroundColor: Color
+    ) -> some View {
+        Button(action: action) {
+            Text(title)
+                .foregroundColor(textColor)
+                .fontWeight(.bold)
+                .padding(18)
+                .frame(maxWidth: .infinity, minHeight: 50)
+                .background(backgroundColor)
+                .cornerRadius(12)
+        }
+    }
 }
 
 #Preview {
