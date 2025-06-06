@@ -13,136 +13,161 @@ struct LoginScreen: View {
     @EnvironmentObject var route: NavigationRouter
     
     var body: some View {
-        VStack(spacing: 24) {
-            Text("ログイン")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding(.top, 40)
-            
-            VStack(alignment: .leading) {
-                Text("メールアドレス")
-                TextField("メールアドレス", text: $vm.email)
-                    .textContentType(.emailAddress)
-                    .keyboardType(.emailAddress)
-                    .autocapitalization(.none)
-                    .textRowStyle()
-                
-                Text("パスワード")
-                SecureField("パスワード", text: $vm.password)
-                    .textRowStyle()
-            }
-            
-            if let error = vm.errorMessage {
-                Text(error)
-                    .foregroundColor(.red)
-                    .font(.caption)
-            }
-            
-            HStack {
-                Button {
-                    
-                } label: {
-                    Text("パスワードを忘れた方")
-                        .underline()
-                }
-                Text("/")
-                Button {
-                    
-                } label: {
-                    Text("ログインでお困りの方")
-                        .underline()
-                }
-            }
-            .foregroundColor(.gray)
-            
-            Button(action: {
-                Task {
-                    let success = await auth.signUp(email: vm.email, password: vm.password)
-                    if success {
-                        route.popToRoot()
-                    }
-                }
-            }) {
-                if vm.isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                } else {
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: geometry.size.height * 0.03) { // 3% スクリンの高さを間隔として
                     Text("ログイン")
+                        .font(.system(size: geometry.size.width * 0.08)) // 8% スクリンの幅を文字の大きさ
+                        .fontWeight(.bold)
+                        .padding(.top, geometry.size.height * 0.05) // 5% スクリンの高さを頂点との間隔に
+                    
+                    VStack(alignment: .leading, spacing: geometry.size.height * 0.02) {
+                        Text("メールアドレス")
+                            .font(.system(size: geometry.size.width * 0.04))
+                        TextField("メールアドレス", text: $vm.email)
+                            .textContentType(.emailAddress)
+                            .keyboardType(.emailAddress)
+                            .autocapitalization(.none)
+                            .textRowStyle(geometry: geometry)
+                        
+                        Text("パスワード")
+                            .font(.system(size: geometry.size.width * 0.04))
+                        SecureField("パスワード", text: $vm.password)
+                            .textRowStyle(geometry: geometry)
+                    }
+                    
+                    if let error = vm.errorMessage {
+                        Text(error)
+                            .foregroundColor(.red)
+                            .font(.system(size: geometry.size.width * 0.035))
+                    }
+                    
+                    HStack {
+                        Button {
+                            
+                        } label: {
+                            Text("パスワードを忘れた方")
+                                .underline()
+                                .font(.system(size: geometry.size.width * 0.035))
+                        }
+                        Text("/")
+                            .font(.system(size: geometry.size.width * 0.035))
+                        Button {
+                            
+                        } label: {
+                            Text("ログインでお困りの方")
+                                .underline()
+                                .font(.system(size: geometry.size.width * 0.035))
+                        }
+                    }
+                    .foregroundColor(.gray)
+                    .fixedSize()
+                    
+                    Button(action: {
+                        Task {
+                            let success = await auth.signUp(email: vm.email, password: vm.password)
+                            if success {
+                                route.popToRoot()
+                            }
+                        }
+                    }) {
+                        if vm.isLoading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .frame(maxWidth: .infinity)
+                                .frame(height: geometry.size.height * 0.06)
+                        } else {
+                            Text("ログイン")
+                                .foregroundColor(.white)
+                                .font(.system(size: geometry.size.width * 0.045))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: geometry.size.height * 0.06)
+                                .background(Color.blue)
+                                .cornerRadius(geometry.size.width * 0.02)
+                        }
+                    }
+                    .disabled(vm.isLoading || vm.email.isEmpty || vm.password.isEmpty)
+                    
+                    Text("または")
+                        .foregroundColor(.gray)
+                        .font(.system(size: geometry.size.width * 0.035))
+                    
+                    Button(action: {
+                        //Apple Login
+                    }) {
+                        HStack(spacing: geometry.size.width * 0.02) {
+                            Image(systemName: "apple.logo")
+                                .font(.system(size: geometry.size.width * 0.04))
+                            Text("Appleでログイン")
+                                .font(.system(size: geometry.size.width * 0.04))
+                        }
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(8)
+                        .frame(height: geometry.size.height * 0.06)
+                        .background(Color.black)
+                        .cornerRadius(geometry.size.width * 0.02)
+                    }
+                    
+                    Button(action: {
+                        // Google Login
+                    }) {
+                        HStack {
+                            Image(.googleOld)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: geometry.size.width * 0.04)
+                            Text("Googleでログイン")
+                        }
+                        .foregroundColor(.black)
+                        .font(.system(size: geometry.size.width * 0.04))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: geometry.size.height * 0.06)
+                        .background(Color.white)
+                        .cornerRadius(geometry.size.width * 0.02)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: geometry.size.width * 0.02)
+                                .stroke(Color(.systemGray4), lineWidth: 1)
+                        )
+                    }
+                    
+                    Button(action: {
+                        route.navigate(to: .signUp)
+                    }) {
+                        Text("会員登録はこちら")
+                            .foregroundColor(.gray)
+                            .font(.system(size: geometry.size.width * 0.04))
+                            .underline()
+                    }
+                    
+                    // MARK: TEST
+                    Button(action: {
+                        vm.login { succese in
+                            auth.isLoggedIn = true
+                            route.popToRoot()
+                        }
+                    }) {
+                        Text("マネジャーモード")
+                            .font(.system(size: geometry.size.width * 0.04))
+                    }
                 }
-            }
-            .disabled(vm.isLoading || vm.email.isEmpty || vm.password.isEmpty)
-            
-            Text("または")
-                .foregroundColor(.gray)
-            
-            Button(action: {
-                //Apple Login
-            }) {
-                HStack {
-                    Image(systemName: "apple.logo")
-                    Text("Appleでログイン")
-                }
-                .foregroundColor(.white)
+                .padding(.horizontal, geometry.size.width * 0.06) // 6% スクリンの幅を横の間隔として
                 .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.black)
-                .cornerRadius(8)
-            }
-            
-            Button(action: {
-                // Google Login
-            }) {
-                // TODO: GOOGLE　LOGOを追加予定
-                Text("Googleでログイン")
-                    .foregroundColor(.black)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color(.systemGray4), lineWidth: 1)
-                    )
-            }
-            Button(action: {
-                route.navigate(to: .signUp)
-            }) {
-                Text("会員登録はこちら")
-                    .foregroundColor(.gray)
-                    .underline()
-            }
-            
-            // MARK: TEST
-            Button(action: {
-                vm.login { succese in
-                    auth.isLoggedIn = true
-                    route.popToRoot()
-                }
-            }) {
-                Text("マネジャーモード")
+                .frame(minHeight: geometry.size.height)
             }
         }
-        .padding(.horizontal, 24)
     }
 }
-
 
 extension View {
-    func textRowStyle() -> some View {
+    func textRowStyle(geometry: GeometryProxy) -> some View {
         self
-            .padding()
+            .font(.system(size: geometry.size.width * 0.04))
+            .frame(height: geometry.size.height * 0.06)
+            .padding(.horizontal, geometry.size.width * 0.04)
             .background(Color(.systemGray6))
-            .cornerRadius(8)
+            .cornerRadius(geometry.size.width * 0.02)
     }
 }
-    
 
 #Preview {
     LoginScreen()
