@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct UserProfile: View {
     @EnvironmentObject var homeViewModel: HomeViewModel
+    @Environment(\.dismiss) private var dismiss  // 添加这行
     @State private var editedName: String = ""
     @State private var editedEmail: String = ""
     @State private var editedUserId: String = ""
@@ -16,6 +18,7 @@ struct UserProfile: View {
     @State private var showingPhotoLibraryPicker = false
     @State private var showingActionSheet = false
     @State private var selectedImage: UIImage?
+    @State private var originalIconData: Data? // 保存原始图片数据
     
     var body: some View {
         VStack(spacing: 20) {
@@ -23,6 +26,17 @@ struct UserProfile: View {
             VStack {
                 if let selectedImage = selectedImage {
                     Image(uiImage: selectedImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 100, height: 100)
+                        .clipShape(Circle())
+                        .overlay(
+                            Circle()
+                                .stroke(Color.gray.opacity(0.3), lineWidth: 2)
+                        )
+                } else if let iconData = originalIconData, let uiImage = UIImage(data: iconData) {
+                    // 显示原始图片数据
+                    Image(uiImage: uiImage)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 100, height: 100)
@@ -100,6 +114,7 @@ struct UserProfile: View {
                 )
                 .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
+                .ignoresSafeArea()
             }
             
             // 编辑表单
@@ -157,30 +172,45 @@ struct UserProfile: View {
     }
     
     private func loadUserData() {
+        // 加载原始数据到编辑字段
         editedName = homeViewModel.user.name
         editedEmail = homeViewModel.user.email
         editedUserId = homeViewModel.user.userId
+        
+        // 保存原始图片数据（如果存在）
+        if let iconData = homeViewModel.user.iconData {
+            originalIconData = iconData
+        }
+        
+        // 清除之前选择的图片
+        selectedImage = nil
     }
     
+    // 只有点击保存按钮时才会更新 homeViewModel
     private func saveChanges() {
-        // 入力検証
         guard !editedName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
               !editedUserId.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
               !editedEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             return
         }
         
-        // 更新されたユーザーオブジェクトを作成
-        let updatedUser = AppUser(
-            id: homeViewModel.user.id,
-            name: editedName.trimmingCharacters(in: .whitespacesAndNewlines),
-            email: editedEmail.trimmingCharacters(in: .whitespacesAndNewlines),
-            userId: editedUserId.trimmingCharacters(in: .whitespacesAndNewlines),
-            iconUrl: homeViewModel.user.iconUrl
-        )
+        // 创建更新后的用户对象
+        var updatedUser = homeViewModel.user
+        updatedUser.name = editedName.trimmingCharacters(in: .whitespacesAndNewlines)
+        updatedUser.email = editedEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+        updatedUser.userId = editedUserId.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        // HomeViewModelのユーザーデータを更新
-        homeViewModel.updateUser(updatedUser)
+        // 如果有选择的图片，保存图片数据
+        if let selectedImage = selectedImage {
+            let imageData = selectedImage.jpegData(compressionQuality: 0.8)
+            updatedUser.iconData = imageData
+            homeViewModel.updateUserWithImageData(imageData)
+        } else {
+            homeViewModel.updateUser(updatedUser)
+        }
+        
+        // 保存成功后返回到HomeView
+        dismiss()
     }
     
     // 隐藏键盘的辅助函数
@@ -237,6 +267,12 @@ struct ImagePickerView: UIViewControllerRepresentable {
 #Preview {
     NavigationView {
         UserProfile()
-            .environmentObject(HomeViewModel())
+            .environmentObject({
+                // 创建一个模拟的 ModelContext 和 UserDataService
+                let container = try! ModelContainer(for: AppUser.self)
+                let modelContext = ModelContext(container)
+                let mockService = UserDataService(modelContext: modelContext)
+                return HomeViewModel(userDataService: mockService)
+            }())
     }
 }
