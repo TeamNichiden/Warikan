@@ -194,11 +194,12 @@ struct AgreementSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: fixedGeometry.height * 0.01) {
             HStack(alignment: .center) {
-                Button(action: { isAgreedTerms.toggle() }) {
-                    Image(systemName: isAgreedTerms ? "checkmark.square" : "square")
-                        .foregroundColor(.black)
-                        .font(.system(size: fixedGeometry.width * 0.05))
-                }
+                Image(systemName: isAgreedTerms ? "checkmark.square" : "square")
+                    .foregroundColor(.black)
+                    .font(.system(size: fixedGeometry.width * 0.05))
+                    .onTapGesture {
+                        isAgreedTerms.toggle()
+                    }
                 Button(action: onShowTerms) {
                     Text("利用規約")
                         .foregroundColor(.blue)
@@ -211,11 +212,12 @@ struct AgreementSection: View {
                 Spacer()
             }
             HStack(alignment: .center) {
-                Button(action: { isAgreedPrivacy.toggle() }) {
                     Image(systemName: isAgreedPrivacy ? "checkmark.square" : "square")
                         .foregroundColor(.black)
                         .font(.system(size: fixedGeometry.width * 0.05))
-                }
+                        .onTapGesture {
+                            isAgreedPrivacy.toggle()
+                        }
                 Button(action: onShowPrivacy) {
                     Text("プライバシーポリシー")
                         .foregroundColor(.blue)
