@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct HomeView: View {
-  @StateObject var vm = HomeViewModel()
-  @EnvironmentObject var route: NavigationRouter
-  @EnvironmentObject var auth: AuthManager
-
+    @EnvironmentObject var vm: HomeViewModel
+    @EnvironmentObject var route: NavigationRouter
+    @EnvironmentObject var auth: AuthManager
+    
   var body: some View {
     VStack {
       
