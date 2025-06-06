@@ -6,7 +6,7 @@ struct RootView: View {
 
   var body: some View {
     if auth.isLoggedIn {
-      HomeView()
+        MainTabView()
         .environmentObject(route)
     } else {
       LoginScreen()
