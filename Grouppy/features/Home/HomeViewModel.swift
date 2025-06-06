@@ -8,5 +8,13 @@
 import SwiftUI
 
 class HomeViewModel: ObservableObject {
+    @Published var user: AppUser
     
+    init() {
+        self.user = MockData.authUser
+    }
+    
+    func updateUser(_ newUser: AppUser) {
+        self.user = newUser
+    }
 }
