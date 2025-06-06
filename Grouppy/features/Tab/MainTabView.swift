@@ -9,7 +9,25 @@ import SwiftUI
 
 struct MainTabView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        TabView {
+            HomeView()
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("ホーム")
+                }
+            
+            EventListView()
+                .tabItem {
+                    Image(systemName: "list.bullet")
+                    Text("イベント")
+                }
+            
+            SettingView()
+                .tabItem {
+                    Image(systemName: "gearshape")
+                    Text("設定")
+                }
+        }
     }
 }
 
