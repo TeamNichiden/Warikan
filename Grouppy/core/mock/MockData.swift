@@ -4,11 +4,12 @@ struct MockData {
     static let users: [AppUser] = [
         AppUser(
             id: UUID(), name: "山田 太郎", email: "taro@example.com", userId: "taro",
-            iconUrl: URL(string: "https://example.com/icon1.png")),
+            iconUrl: URL(string: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw_HeSzHfBorKS4muw4IIeVvvRgnhyO8Gn8w&s")),
         AppUser(
             id: UUID(), name: "佐藤 花子", email: "hanako@example.com", userId: "hanako",
-            iconUrl: URL(string: "https://example.com/icon2.png")),
-        AppUser(id: UUID(), name: "鈴木 次郎", email: "jiro@example.com", userId: "jiro", iconUrl: nil),
+            iconUrl: URL(string: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw_HeSzHfBorKS4muw4IIeVvvRgnhyO8Gn8w&s")),
+        AppUser(id: UUID(), name: "鈴木 次郎", email: "jiro@example.com", userId: "jiro", iconUrl:
+                    URL(string: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw_HeSzHfBorKS4muw4IIeVvvRgnhyO8Gn8w&s")),
     ]
     
     static let authUser: AppUser = users[0]

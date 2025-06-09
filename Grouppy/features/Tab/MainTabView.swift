@@ -16,10 +16,10 @@ struct MainTabView: View {
                     Text("ホーム")
                 }
             
-            EventListView()
+            FriendListView()
                 .tabItem {
                     Image(systemName: "list.bullet")
-                    Text("イベント")
+                    Text("フレンド")
                 }
             
             SettingView()
