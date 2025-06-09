@@ -38,7 +38,7 @@ struct FriendListRow: View {
             Spacer()
             if checkBox {
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 100))
+                    .font(.system(size: 20))
                     .foregroundColor(isSelected ? .blue : .gray)
                     .onTapGesture {
                         onTap()

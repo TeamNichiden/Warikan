@@ -15,7 +15,7 @@
 
 import SwiftUI
 
-struct AddUsersSheetRow: View {
+struct AddUserSheetRow: View {
     let user: AppUser
     let isSelected: Bool
     let checkBox: Bool

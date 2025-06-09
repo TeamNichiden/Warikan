@@ -12,6 +12,7 @@ struct AddNewEventView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject var vm = AddNewEventViewModel()
     @EnvironmentObject var route: NavigationRouter
+    @State private var isShowFriendList: Bool = false
     
     var body: some View {
         ScrollView {
@@ -58,7 +59,7 @@ struct AddNewEventView: View {
                         .fontWeight(.bold)
                     HStack {
                         Button {
-                            // メンバー追加処理
+                            isShowFriendList = true
                         } label: {
                             Image(systemName: "plus.circle.fill")
                                 .font(.system(size: 24))
@@ -89,6 +90,10 @@ struct AddNewEventView: View {
                 }
                 .disabled(vm.event.title.isEmpty)
                 .padding(.vertical)
+            }
+            .sheet(isPresented: $isShowFriendList) {
+                AddUserToEventSheet()
+                    .presentationDetents([.fraction(0.8)])
             }
             .onTapGesture {
                 hideKeyboard()

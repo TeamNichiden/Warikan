@@ -9,18 +9,24 @@ import SwiftUI
 
 struct AddUserToEventSheet: View {
     @State var vm = FriendListViewModel()
+    @Environment(\.dismiss) private var dismiss
+    init(vm: FriendListViewModel = FriendListViewModel()) {
+        self.vm = vm
+        self.vm.shouldAddUsers = true
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
-            
             HStack {
                 Text("メンバーを追加")
                     .fontWeight(.bold)
+                    .font(.title3)
             }
             .frame(maxWidth: .infinity)
+            .padding(.top)
             .overlay(alignment: .trailing) {
                 Button {
-                    
+                    dismiss()
                 } label: {
                     Text("完了")
                 }
@@ -33,35 +39,12 @@ struct AddUserToEventSheet: View {
                 Divider()
                 // ユーザー検索欄
                 TextField("検索", text: $vm.inputText)
-                    .padding()
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 4)
                     .background(Color(.systemGray6))
                     .cornerRadius(8)
                 Divider()
-                
-                Button(action: {
-                    vm.shouldAddUsers.toggle()
-                    if vm.shouldAddUsers {
-                        vm.createEvent()
-                    }
-                }) {
-                    if !vm.shouldAddUsers {
-                        Text("イベント作成")
-                            .font(.body)
-                            .padding(4)
-                            .overlay(
-                                Rectangle()
-                                    .stroke(Color.blue, lineWidth: 1)
-                            )
-                    } else {
-                        Text("完了")
-                            .font(.body)
-                            .padding(4)
-                            .overlay(
-                                Rectangle()
-                                    .stroke(Color.blue, lineWidth: 1)
-                            )
-                    }
-                }
+                    .padding(.bottom)
                 
                 ForEach(MockData.users) { user in
                     AddUserSheetRow(
@@ -71,8 +54,10 @@ struct AddUserToEventSheet: View {
                     ) {
                         if vm.selectedUsers.contains(user.id) {
                             vm.selectedUsers.remove(user.id)
+                            vm.showCurrentUsers()
                         } else {
                             vm.selectedUsers.insert(user.id)
+                            vm.showCurrentUsers()
                         }
                     }
                     Divider()
