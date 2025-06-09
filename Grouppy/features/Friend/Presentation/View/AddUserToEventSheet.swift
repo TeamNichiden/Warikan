@@ -51,7 +51,8 @@ struct AddUserToEventSheet: View {
                         user: user,
                         isSelected: vm.selectedUsers.contains(user.id),
                         checkBox: vm.shouldAddUsers
-                    ) {
+                    )
+                    .onTapGesture {
                         if vm.selectedUsers.contains(user.id) {
                             vm.selectedUsers.remove(user.id)
                             vm.showCurrentUsers()
