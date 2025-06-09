@@ -19,7 +19,6 @@ struct AddUserSheetRow: View {
     let user: AppUser
     let isSelected: Bool
     let checkBox: Bool
-    let onTap: () -> Void
     
     var body: some View {
         HStack(alignment: .top) {
@@ -47,9 +46,6 @@ struct AddUserSheetRow: View {
             if checkBox {
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .foregroundColor(isSelected ? .blue : .gray)
-                    .onTapGesture {
-                        onTap()
-                    }
             }
         }
         .frame(maxWidth: .infinity)
