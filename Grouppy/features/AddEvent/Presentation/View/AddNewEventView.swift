@@ -204,24 +204,6 @@ struct AddNewEventView: View {
                             insertion: .scale.combined(with: .opacity),
                             removal: .scale.combined(with: .opacity)
                         ))
-                    
-                    Button {
-                        vm.updateDate()
-                        withAnimation(.spring()) {
-                            vm.showDatePicker = false
-                        }
-                    } label: {
-                        Text("日付確定")
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color.blue)
-                            )
-                    }
-                    .buttonStyle(ScaleButtonStyle())
                 }
                 .padding()
                 .background(

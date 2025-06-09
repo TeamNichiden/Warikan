@@ -146,7 +146,7 @@ struct EventInfoView: View {
                 route.popToRoot()
             } label: {
                 Text("戻る")
-                    .viewButtonStyle()
+                    .buttonStyle(ScaleButtonStyle())
             }
         }
         .padding(.top, 24)
