@@ -9,4 +9,5 @@ enum Route: Hashable {
     case history
     case setting
     case signUp
+    case map
 }

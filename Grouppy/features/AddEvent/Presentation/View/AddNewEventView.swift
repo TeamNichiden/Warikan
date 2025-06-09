@@ -214,8 +214,11 @@ struct AddNewEventView: View {
             
             // 地点选择
             Button {
-                vm.moveToAppleMap()
+//                vm.moveToAppleMap() // マップAppに遷移
+                route.navigate(to: .map)
             } label: {
+                
+                
                 HStack {
                     Image(systemName: "mappin.and.ellipse")
                         .foregroundColor(.red)
@@ -246,6 +249,8 @@ struct AddNewEventView: View {
                                 .stroke(vm.event.place.isEmpty ? Color.clear : Color.red.opacity(0.3), lineWidth: 1)
                         )
                 )
+                
+                
             }
             .buttonStyle(ScaleButtonStyle())
         }
