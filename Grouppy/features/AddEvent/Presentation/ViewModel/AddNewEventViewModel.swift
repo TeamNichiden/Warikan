@@ -13,7 +13,7 @@ class AddNewEventViewModel: ObservableObject {
         id: UUID().uuidString,
         title: "",
         description: "",
-        date: Date().dateToString(),
+        date: "",
         place: "",
         ownerId: "",
         participantIds: [],
