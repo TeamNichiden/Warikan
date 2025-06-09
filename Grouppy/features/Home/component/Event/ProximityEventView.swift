@@ -11,10 +11,6 @@ struct ProximityEventView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("最近のイベント")
-                .font(.headline)
-                .fontWeight(.bold)
-            
             if recentEvents.isEmpty {
                 Text("現在はイベントがありません")
                     .foregroundColor(.gray)
@@ -64,6 +60,7 @@ struct ProximityEventView: View {
                     topTrailingRadius: 8
                 )
             )
+            .shadow(color: . gray, radius: 4, x: 4, y: 4)
         }
     }
 }
