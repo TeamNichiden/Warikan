@@ -198,6 +198,7 @@ struct AddNewEventView: View {
             
             // 日期选择器
             if vm.showDatePicker {
+                
                 VStack(spacing: 12) {
                     DatePickerSheetView(vm: vm)
                         .transition(.asymmetric(
@@ -205,17 +206,19 @@ struct AddNewEventView: View {
                             removal: .scale.combined(with: .opacity)
                         ))
                 }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(.quaternarySystemFill))
-                )
             }
+            
             
             // 地点选择
             Button {
-                vm.moveToAppleMap()
+//                vm.moveToAppleMap() // マップAppに遷移
+                
+                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                    vm.showPlaceMenu.toggle()
+                }
             } label: {
+                
+                
                 HStack {
                     Image(systemName: "mappin.and.ellipse")
                         .foregroundColor(.red)
@@ -236,6 +239,8 @@ struct AddNewEventView: View {
                     
                     Image(systemName: "chevron.right")
                         .foregroundColor(.secondary)
+                        .rotationEffect(.degrees(vm.showPlaceMenu ? 90 : 0))
+                        .animation(.easeInOut(duration: 0.3), value: vm.showPlaceMenu)
                 }
                 .padding()
                 .background(
@@ -246,8 +251,26 @@ struct AddNewEventView: View {
                                 .stroke(vm.event.place.isEmpty ? Color.clear : Color.red.opacity(0.3), lineWidth: 1)
                         )
                 )
+                
+                
             }
             .buttonStyle(ScaleButtonStyle())
+            
+            // 位置情報Card
+            if vm.showPlaceMenu {
+                Button(action: {
+                    route.navigate(to: .map)
+                }) {
+                    Text("位置情報を追加")
+                }
+                PlaceCard(placeAdress: $vm.placeAdress)
+                    .frame(minHeight: 80)
+                    .padding(8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color(.tertiarySystemGroupedBackground))
+                    )
+            }
         }
         .padding()
         .background(
@@ -416,6 +439,12 @@ struct ModernTextFieldStyle: TextFieldStyle {
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(isFocused ? Color.blue.opacity(0.3) : Color.clear, lineWidth: 1)
             )
+    }
+}
+
+extension View {
+    func PlaceCard(placeAdress: Binding<String>) -> some View {
+        TextEditor(text: placeAdress)
     }
 }
 

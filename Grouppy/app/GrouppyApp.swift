@@ -63,6 +63,8 @@ struct ContentView: View {
                         .toolbar(.hidden, for: .navigationBar)
                     case .signUp:
                         SignupScreen()
+                    case .map:
+                        MapView()
                     }
                 }
         }
