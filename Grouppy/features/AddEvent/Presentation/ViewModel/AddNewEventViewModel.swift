@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import MapKit
 
 class AddNewEventViewModel: ObservableObject {
     @Published var event = Event(
@@ -25,10 +26,25 @@ class AddNewEventViewModel: ObservableObject {
     @Published var lastEventId: String?
     @Published var selectedDate: Date = Date()
     @Published var showDatePicker: Bool = false
+    @Published var showPlaceMenu: Bool = false
+    @Published var placeAdress: String = ""
     private let repository: EventInfoRepository
+    @Published var mapViewModel: MapViewModel
+    @Published var locationState: LocationState // 共享的位置状态
     
-    init(repository: EventInfoRepository = MockEventInfoRepositoryImpl()) {
+    init(repository: EventInfoRepository = MockEventInfoRepositoryImpl(),
+         locationState: LocationState = LocationState()) {
         self.repository = repository
+        self.locationState = locationState
+        self.mapViewModel = MapViewModel(locationState: locationState)
+    }
+    
+    // 计算属性，访问共享的selectedPosition
+    var selectedPosition: CLLocationCoordinate2D? {
+        get { locationState.selectedPosition }
+        set { 
+            locationState.selectedPosition = newValue
+        }
     }
     
     func isCheckingInfo() {
@@ -75,6 +91,14 @@ class AddNewEventViewModel: ObservableObject {
                 // 如果Apple Maps应用不可用，显示错误信息或提供其他选择
                 print("Apple Maps应用不可用")
             }
+        }
+    }
+    
+    func updatePlaceAdress() {
+        if let selectedPosition = selectedPosition {
+            placeAdress = "\(selectedPosition.latitude) \n \(selectedPosition.longitude)"
+        } else {
+            placeAdress = "まだ設定なし"
         }
     }
 }
